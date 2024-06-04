@@ -135,6 +135,8 @@ public class TGItems implements ITGInitializer{
 	/**
 	 * Metals
 	 */
+	public static ItemStack DOOM_PLATE;
+	public static ItemStack MK2_POWER_PLATE;
 	public static ItemStack STEAMARMOR_PLATE;
 	public static ItemStack PLATE_IRON;
 	public static ItemStack PLATE_COPPER;
@@ -164,6 +166,7 @@ public class TGItems implements ITGInitializer{
 	public static ItemStack COIL;
 	public static ItemStack CYBERNETIC_PARTS;
 	public static ItemStack ELECTRIC_ENGINE;
+	public static ItemStack REINFORCED_ELECTRIC_ENGINE;
 	
 	public static ItemStack LASER_FOCUS;
 	public static ItemStack PUMP_MECHANISM;
@@ -187,6 +190,7 @@ public class TGItems implements ITGInitializer{
 	public static ItemStack INGOT_OBSIDIAN_STEEL;
 	public static ItemStack INGOT_LEAD;
 	public static ItemStack INGOT_TITANIUM;
+	public static ItemStack INGOT_HELLISH;
 	
 	public static ItemStack NUGGET_COPPER;
 	public static ItemStack NUGGET_LEAD;
@@ -256,6 +260,7 @@ public class TGItems implements ITGInitializer{
 	public static ItemStack QUARTZ_ROD;
 	public static ItemStack RC_HEAT_RAY;
 	public static ItemStack RC_UV_EMITTER;
+	public static ItemStack UV_ELEMENT;
 	
 	public static ItemStack MININGDRILLHEAD_OBSIDIAN;
 	public static ItemStack MININGDRILLHEAD_CARBON;
@@ -384,7 +389,7 @@ public class TGItems implements ITGInitializer{
 		PLATE_TIN =  SHARED_ITEM.addsharedVariant("platetin");
 		PLATE_BRONZE =  SHARED_ITEM.addsharedVariant("platebronze");
 		PLATE_STEEL =  SHARED_ITEM.addsharedVariant("platesteel");
-		PLATE_OBSIDIAN_STEEL=  SHARED_ITEM.addsharedVariant("plateobsidiansteel");
+		PLATE_OBSIDIAN_STEEL =  SHARED_ITEM.addsharedVariant("plateobsidiansteel");
 		PLATE_LEAD =  SHARED_ITEM.addsharedVariant("platelead");
 		PLATE_CARBON =  SHARED_ITEM.addsharedVariant("platecarbon");
 		PLATE_TITANIUM =  SHARED_ITEM.addsharedVariant("platetitanium");
@@ -546,7 +551,16 @@ public class TGItems implements ITGInitializer{
 		
 		COMBAT_KNIFE = new TGSword(TG_STEEL, "combatknife");
 		CROWBAR = new TGCrowbar(TG_STEEL, "crowbar");
-		
+
+		/**
+		 * Items from Final Update
+		 */
+		DOOM_PLATE =  SHARED_ITEM.addsharedVariant("platepowerdoom");
+		MK2_POWER_PLATE =  SHARED_ITEM.addsharedVariant("platepowermk2");
+		REINFORCED_ELECTRIC_ENGINE = SHARED_ITEM.addsharedVariant("reinforced_electric_engine");
+		INGOT_HELLISH = SHARED_ITEM.addsharedVariant("ingothellish");
+		UV_ELEMENT = SHARED_ITEM.addsharedVariant("uvelement");
+
 		if(TGConfig.debug) {
 			WORLDGEN_TEST_TOOL = new WorldGenTestTool("worldgentesttool");
 			BUIDLING_SCAN_TOOL = new BuildingScanTool("buildingscantool");

@@ -37,7 +37,6 @@ import techguns.entities.npcs.ZombiePigmanSoldier;
 import techguns.entities.npcs.ZombiePoliceman;
 import techguns.entities.npcs.ZombieSoldier;
 import techguns.entities.projectiles.AdvancedBulletProjectile;
-import techguns.entities.projectiles.AlienBlasterProjectile;
 import techguns.entities.projectiles.BioGunProjectile;
 import techguns.entities.projectiles.BlasterProjectile;
 import techguns.entities.projectiles.ChainsawProjectile;
@@ -96,7 +95,6 @@ public class TGEntities implements ITGInitializer {
 		EntityRegistry.registerModEntity(new ResourceLocation(Techguns.MODID,"AdvancedBulletProjectile"),AdvancedBulletProjectile.class, "AdvancedBulletProjectile", ++Techguns.modEntityID, Techguns.MODID, bulletTrackRange, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(Techguns.MODID,"GuidedMissileProjectile"),GuidedMissileProjectile.class, "GuidedMissileProjectile", ++Techguns.modEntityID, Techguns.MODID, bulletTrackRange, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(Techguns.MODID,"DeatomizerProjectile"),DeatomizerProjectile.class, "DeatomizerProjectile", ++Techguns.modEntityID, Techguns.MODID, bulletTrackRange, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(Techguns.MODID,"AlienBlasterProjectile"),AlienBlasterProjectile.class, "AlienBlasterProjectile", ++Techguns.modEntityID, Techguns.MODID, bulletTrackRange, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(Techguns.MODID,"SonicShotgunProjectile"),SonicShotgunProjectile.class, "SonicShotgunProjectile", ++Techguns.modEntityID, Techguns.MODID, bulletTrackRange, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(Techguns.MODID,"CyberdemonBlasterProjectile"),CyberdemonBlasterProjectile.class, "CyberdemonBlasterProjectile", ++Techguns.modEntityID, Techguns.MODID, bulletTrackRange, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(Techguns.MODID,"PowerHammerProjectile"),PowerHammerProjectile.class, "PowerHammerProjectile", ++Techguns.modEntityID, Techguns.MODID, bulletTrackRange, 1, true);
@@ -167,6 +165,10 @@ public class TGEntities implements ITGInitializer {
 		
 		TGSpawnManager.spawnTableNether.registerSpawn(new TGNpcSpawn(ZombiePigmanSoldier.class, TGConfig.spawnWeightZombiePigmanSoldier), 0);
 		TGSpawnManager.spawnTableNether.registerSpawn(new TGNpcSpawn(CyberDemon.class, TGConfig.spawnWeightCyberDemon), 0);
+
+		TGSpawnManager.spawnTableEnd.registerSpawn(new TGNpcSpawn(SuperMutantBasic.class, TGConfig.spawnWeightSuperMutantBasic), 0);
+		TGSpawnManager.spawnTableEnd.registerSpawn(new TGNpcSpawn(SuperMutantElite.class, TGConfig.spawnWeightSuperMutantElite), 0);
+		TGSpawnManager.spawnTableEnd.registerSpawn(new TGNpcSpawn(SuperMutantHeavy.class, TGConfig.spawnWeightSuperMutantHeavy), 0);
 		
 	}
 
@@ -174,6 +176,7 @@ public class TGEntities implements ITGInitializer {
 	public void postInit(FMLPostInitializationEvent event) {
 		ArrayList<Biome> overworldBiomes = new ArrayList<>();
 		ArrayList<Biome> netherBiomes = new ArrayList<>();
+		ArrayList<Biome> endBiomes = new ArrayList<>();
 		ForgeRegistries.BIOMES.forEach(b -> {
 			
 			if (!isBlacklisted(b.getRegistryName().toString())) {
@@ -182,6 +185,8 @@ public class TGEntities implements ITGInitializer {
 					overworldBiomes.add(b);
 				} else if (BiomeDictionary.hasType(b, Type.NETHER)) {
 					netherBiomes.add(b);
+				} else if (BiomeDictionary.hasType(b, Type.END)) {
+					endBiomes.add(b);
 				}
 			}
 		});
@@ -191,6 +196,9 @@ public class TGEntities implements ITGInitializer {
 		}
 		if(TGConfig.spawnWeightTGNether>0) {
 			EntityRegistry.addSpawn(TGDummySpawn.class, TGConfig.spawnWeightTGNether, 1, 3, EnumCreatureType.MONSTER,netherBiomes.toArray(new Biome[netherBiomes.size()]));
+		}
+		if(TGConfig.spawnWeightTGEnd>0) {
+			EntityRegistry.addSpawn(TGDummySpawn.class, TGConfig.spawnWeightTGEnd, 1, 3, EnumCreatureType.MONSTER,endBiomes.toArray(new Biome[endBiomes.size()]));
 		}
 	}
 

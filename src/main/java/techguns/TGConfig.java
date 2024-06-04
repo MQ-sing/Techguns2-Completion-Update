@@ -64,6 +64,9 @@ public class TGConfig {
 	public static int spawnWeightZombieMiner;
 	public static int spawnWeightZombiePigmanSoldier;
 	public static int spawnWeightCyberDemon;
+	public static int spawnWeightSuperMutantBasic;
+	public static int spawnWeightSuperMutantElite;
+	public static int spawnWeightSuperMutantHeavy;
 	public static int spawnWeightSkeletonSoldier;
 	
 	public static int spawnWeightBandit;
@@ -72,6 +75,7 @@ public class TGConfig {
 	
 	public static int spawnWeightTGOverworld;
 	public static int spawnWeightTGNether;
+	public static int spawnWeightTGEnd;
 	
 	public static int cl_sortPassesPerTick;
 	
@@ -184,10 +188,10 @@ public class TGConfig {
 		addLeadIngots = config.getBoolean("addLeadIngot", CATEGORY_ENABLING_ITEMS, true, "Add lead ingots.");
 		addLeadNuggets = config.getBoolean("addLeadNugget", CATEGORY_ENABLING_ITEMS, true, "Add Lead nuggets.");
 		
-		addSteelIngots = config.getBoolean("addSteelIngot", CATEGORY_ENABLING_ITEMS, true, "Adds Steel ingots.");
-		addSteelNuggets = config.getBoolean("addSteelNugget", CATEGORY_ENABLING_ITEMS, true, "Adds Steel nuggets.");
+		addSteelIngots = config.getBoolean("addSteelIngot", CATEGORY_ENABLING_ITEMS, true, "Add steel ingots.");
+		addSteelNuggets = config.getBoolean("addSteelNugget", CATEGORY_ENABLING_ITEMS, true, "Add steel nuggets.");
 	
-		addSteelRecipe = config.getBoolean("addSteelRecipe", CATEGORY_ENABLING_ITEMS, true, "Enables steel recipe in a TG blast furance.");
+		addSteelRecipe = config.getBoolean("addSteelRecipe", CATEGORY_ENABLING_ITEMS, true, "Enables steel recipe in a TG blast furnace.");
 		
 		addOreDicts = config.getBoolean("addOreDicts", CATEGORY_ENABLING_ITEMS, true, "Registers oreDicts for carbon, titanium, circuits and other items that might be used from other mods with a cheaper recipes.");
 		
@@ -195,8 +199,9 @@ public class TGConfig {
 		distanceSpawnLevel1 = config.getInt("DistanceSpawnLevel1", "NPC Spawn", 1000, 0, Integer.MAX_VALUE, "Up to which distance to worldspawn only mobs with danger level up to 1 will spawn");
 		distanceSpawnLevel2 = config.getInt("DistanceSpawnLevel2", "NPC Spawn", 2500, 0, Integer.MAX_VALUE, "Up to which distance to worldspawn only mobs with danger level up to 2 will spawn");
 				
-		spawnWeightTGOverworld = config.getInt("Techguns Spawnweight Overworld", "NPC Spawn", 600, 0, 10000, "Spawn weigth of Techguns NPCs, determines how many TG npcs spawn");
-		spawnWeightTGNether = config.getInt("Techguns Spawnweight NEther", "NPC Spawn", 300, 0, 10000, "Spawn weigth of Techguns NPCs in the Nether, determines how many TG npcs spawn");
+		spawnWeightTGOverworld = config.getInt("Techguns Spawnweight Overworld", "NPC Spawn", 600, 0, 10000, "Spawn weight of Techguns NPCs in the Overworld, determines how many TG NPCs spawn");
+		spawnWeightTGNether = config.getInt("Techguns Spawnweight Nether", "NPC Spawn", 300, 0, 10000, "Spawn weight of Techguns NPCs in the Nether, determines how many TG NPCs spawn");
+		spawnWeightTGEnd = config.getInt("Techguns Spawnweight End", "NPC Spawn", 5, 0, 10000, "Spawn weight of Techguns NPCs in the End, determines how many TG NPCs spawn");
 		
 		spawnWeightZombieSoldier  = config.getInt("SpawnWeightZombieSoldier", "NPC Spawn", 100, 0, 10000, "Spawn weight for spawning Zombie Soldiers, at 0 spawn will not be registered");
 		
@@ -207,6 +212,12 @@ public class TGConfig {
 		spawnWeightZombiePigmanSoldier  = config.getInt("SpawnWeightZombiePigmanSoldier", "NPC Spawn", 100, 0, 10000, "Spawn weight for spawning Zombie Pigman Soldiers (Nether only), at 0 spawn will not be registered");
 		
 		spawnWeightCyberDemon = config.getInt("SpawnWeightCyberDemon", "NPC Spawn", 30, 0, 10000, "Spawn weight for spawning Cyber Demons (Nether only), at 0 spawn will not be registered");
+
+		spawnWeightSuperMutantBasic = config.getInt("SpawnWeightSuperMutantBasic", "NPC Spawn", 100, 0, 10000, "Spawn weight for spawning Basic Super Mutants (End only), at 0 spawn will not be registered");
+
+		spawnWeightSuperMutantElite = config.getInt("SpawnWeightSuperMutantElite", "NPC Spawn", 40, 0, 10000, "Spawn weight for spawning Elite Super Mutants (End only), at 0 spawn will not be registered");
+
+		spawnWeightSuperMutantHeavy = config.getInt("SpawnWeightSuperMutantHeavy", "NPC Spawn", 10, 0, 10000, "Spawn weight for spawning Heavy Super Mutants (End only), at 0 spawn will not be registered");
 		
 		spawnWeightBandit = config.getInt("SpawnWeightBandit", "NPC Spawn", 50, 0, 10000, "Spawn weight for spawning Bandit groups, at 0 spawn will not be registered");
 		

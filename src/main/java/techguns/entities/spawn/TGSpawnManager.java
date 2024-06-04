@@ -22,6 +22,7 @@ public class TGSpawnManager {
 
 	public static TGNpcSpawnTable spawnTableOverworld = new TGNpcSpawnTable(5);
 	public static TGNpcSpawnTable spawnTableNether = new TGNpcSpawnTable(5);
+	public static TGNpcSpawnTable spawnTableEnd = new TGNpcSpawnTable(5);
 
 	protected static Random rnd = new Random();
 	
@@ -166,6 +167,8 @@ public class TGSpawnManager {
 		switch(id) {
 		case -1:
 			return spawnTableNether;
+		case 1:
+			return spawnTableEnd;
 		default:
 			return spawnTableOverworld;
 		}

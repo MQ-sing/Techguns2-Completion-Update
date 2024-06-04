@@ -134,6 +134,7 @@ public class TGSounds {
 	
 	public static SoundEvent SHISHKEBAP_SWING = createSoundEvent("guns.shishkebabfire");
 	public static SoundEvent SHISHKEBAP_RELOAD = createSoundEvent("guns.shishkebabreload");
+	public static SoundEvent SWITCH_AMMO_TYPE = createSoundEvent("guns.switchammo");
 	
 	public static SoundEvent ANTI_GRAV_START = createSoundEvent("items.antiGravStart");
 	public static SoundEvent NIGHTVISION_ON = createSoundEvent("nightvision.on");

@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import techguns.client.ClientProxy;
 import techguns.util.EntityCondition;
-import techguns.util.TGLogger;
 
 public class PacketSpawnParticleOnEntity implements IMessage {
 
@@ -103,7 +102,6 @@ public class PacketSpawnParticleOnEntity implements IMessage {
 					ClientProxy.get().createFXOnEntityWithOffset(m.name, ent, m.offsetX, m.offsetY, m.offsetZ, m.attachToHead, m.condition);
 //				}
 			} else {
-				TGLogger.logger_client.warning("Got Packet for FX "+m.name+" on Entity, but ent was null");
 			}
 		}
 	}

@@ -16,7 +16,6 @@ import techguns.Techguns;
 import techguns.items.GenericItemShared;
 import techguns.items.GenericItemShared.SharedItemEntry;
 import techguns.items.guns.GenericGun;
-import techguns.util.TGLogger;
 
 public class ItemJsonCreator {
 
@@ -27,7 +26,6 @@ public class ItemJsonCreator {
 		File f = new File(prefix+path+name+".json");
 		//TGLogger.logger_client.log(Level.INFO, "Checking Item JSON:"+f.getAbsolutePath());
 		if(!f.exists()){
-			TGLogger.logger_client.log(Level.INFO, "Creating Item JSON:"+f.getAbsolutePath());
 			
 			Writer writer;
 			try {

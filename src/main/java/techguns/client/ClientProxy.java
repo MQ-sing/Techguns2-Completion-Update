@@ -98,11 +98,9 @@ import techguns.client.models.armor.ModelRiotShield;
 import techguns.client.models.armor.ModelSteamArmor;
 import techguns.client.models.armor.ModelT3PowerArmor;
 import techguns.client.models.armor.ModelT4PowerArmorMk2;
-import techguns.client.models.gibs.ModelGibsQuadruped;
 import techguns.client.models.guns.ModelAK;
 import techguns.client.models.guns.ModelAS50;
 import techguns.client.models.guns.ModelAUG;
-import techguns.client.models.guns.ModelAlienBlaster;
 import techguns.client.models.guns.ModelBaseBaked;
 import techguns.client.models.guns.ModelBaseBakedGrenadeLauncher;
 import techguns.client.models.guns.ModelBiogun;
@@ -248,7 +246,6 @@ import techguns.entities.npcs.ZombiePigmanSoldier;
 import techguns.entities.npcs.ZombiePoliceman;
 import techguns.entities.npcs.ZombieSoldier;
 import techguns.entities.projectiles.AdvancedBulletProjectile;
-import techguns.entities.projectiles.AlienBlasterProjectile;
 import techguns.entities.projectiles.BioGunProjectile;
 import techguns.entities.projectiles.BlasterProjectile;
 import techguns.entities.projectiles.ChainsawProjectile;
@@ -849,15 +846,6 @@ public class ClientProxy extends CommonProxy {
 					{-0.18f,0f,-0.05f} //frame
 				}).setMuzzleFXPos3P(0.11f, -0.83f).setRecoilAnim(GunAnimation.genericRecoil, 0.2f, 5.0f));
 		
-		ItemRenderHack.registerItemRenderer(TGuns.alienblaster,new RenderGunBase(new ModelAlienBlaster(),1).setBaseTranslation(RenderItemBase.SCALE*0.5f, -0.3f, -0.2f)
-				.setBaseScale(0.75f).setGUIScale(0.75f).setMuzzleFx(ScreenEffect.muzzleFlashAlienBlaster, 0f, 0.28f, -0.52f, 0.55f,0f).setTransformTranslations(new float[][]{
-					{0,0.06f,-0.02f}, //First Person
-					{0.0f,-0.07f,-0.01f}, //Third Person
-					{0.02f,-0.08f,0}, //GUI
-					{0.02f,-0.08f,0}, //Ground
-					{-0.04f,-0.09f,0f} //frame
-				}).setRecoilAnim(GunAnimation.genericRecoil, 0.025f, 10.0f).setMuzzleFXPos3P(0.07f, -0.36f).setReloadAnim(GunAnimation.breechReload, -0.15f, 55.0f).setReloadAnim3p(GunAnimation.breechReload, 0f, 55.0f));
-		
 		ItemRenderHack.registerItemRenderer(TGuns.blasterrifle,new RenderGunBase(new ModelBlasterRifle(),1).setBaseTranslation(RenderItemBase.SCALE*0.5f, -0.1f, 0)
 				.setBaseScale(0.9f).setGUIScale(0.45f).setMuzzleFx(ScreenEffect.muzzleFlashLaser, 0, 0.24f, -0.93f, 0.75f,0).setRecoilAnim(GunAnimation.genericRecoil, 0.1f, 4.0f).setTransformTranslations(new float[][]{
 					{0f,0.11f,-0.20f}, //First Person
@@ -970,8 +958,7 @@ public class ClientProxy extends CommonProxy {
 				}).setRecoilAnim(GunAnimation.genericRecoil, 0.025f, 10.0f).setMuzzleFXPos3P(0.06f, -0.31f).setReloadAnim(GunAnimation.breechReload, -0.15f, 55.0f).setReloadAnim3p(GunAnimation.breechReload, 0f, 55.0f));
 	
 		
-		ItemRenderHack.registerItemRenderer(TGuns.gaussrifle,new RenderGunBaseObj(
-				new ModelBaseBaked(new ResourceLocation(Techguns.MODID,"textures/guns/gaussrifle.png"), new ModelResourceLocation(TGuns.gaussrifle.getRegistryName(), "inventory")),1,-90f)
+		ItemRenderHack.registerItemRenderer(TGuns.gaussrifle,new RenderGunBaseObj(new ModelBaseBaked(new ResourceLocation(Techguns.MODID,"textures/guns/gaussrifle.png"), new ModelResourceLocation(TGuns.gaussrifle.getRegistryName(), "inventory")),1,-90f)
 				.setBaseTranslation(0.6f, 0f, RenderItemBase.SCALE*0.5f-0.09f)
 				.setBaseScale(0.9f).setGUIScale(0.25f).setMuzzleFx(ScreenEffect.muzzleFlashSonic, 0, 0.21f, -1.56f, 1.0f,0).setTransformTranslations(new float[][]{
 					{0f,0.12f,-0.1f}, //First Person
@@ -1104,7 +1091,6 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(AdvancedBulletProjectile.class, RenderAdvancedBulletProjectile::new);
 		RenderingRegistry.registerEntityRenderingHandler(GuidedMissileProjectile.class, RenderRocketProjectile::new);
 		RenderingRegistry.registerEntityRenderingHandler(DeatomizerProjectile.class, RenderInvisibleProjectile<DeatomizerProjectile>::new);
-		RenderingRegistry.registerEntityRenderingHandler(AlienBlasterProjectile.class, RenderInvisibleProjectile<AlienBlasterProjectile>::new);
 		RenderingRegistry.registerEntityRenderingHandler(SonicShotgunProjectile.class, RenderSonicShotgunProjectile::new);
 		RenderingRegistry.registerEntityRenderingHandler(CyberdemonBlasterProjectile.class, RenderInvisibleProjectile<CyberdemonBlasterProjectile>::new);
 		RenderingRegistry.registerEntityRenderingHandler(PowerHammerProjectile.class, RenderInvisibleProjectile<PowerHammerProjectile>::new);

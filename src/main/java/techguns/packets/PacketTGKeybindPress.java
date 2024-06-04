@@ -171,6 +171,14 @@ public class PacketTGKeybindPress implements IMessage {
 				}
 				TGPackets.network.sendTo(new PacketTGExtendedPlayerSync(ply,props, true), (EntityPlayerMP)ply);
 			}
+			else if(message.buttonID==TGKeybindsID.TOGGLE_AMMO_TYPE) {
+				ItemStack item = ply.getHeldItem(message.hand);
+				if (!item.isEmpty() && item.getItem() instanceof GenericGun){
+
+					GenericGun gun = (GenericGun) item.getItem();
+					gun.toggleAmmoType(item, ply.world, ply, message.hand);
+				}
+			}
 			
 		}
 

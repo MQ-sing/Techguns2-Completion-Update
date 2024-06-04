@@ -201,8 +201,9 @@ public class TGMachineRecipes {
 		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.COIL, 1)), 1, FabricatorRecipe.circuit_elite, 2, FabricatorRecipe.mechanicalPartsT3, 1, FabricatorRecipe.titaniumPlate, 1, TGItems.SONIC_EMITTER, 1);		
 		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.ENRICHED_URANIUM, 1)), 1, FabricatorRecipe.circuit_elite, 2, FabricatorRecipe.mechanicalPartsT3, 2, FabricatorRecipe.leadPlate, 2, TGItems.RAD_EMITTER, 1);		
 		
-		FabricatorRecipe.addRecipe(new ItemStackOreDict("ingotSteel", 2), 1, FabricatorRecipe.circuit_basic, 1, FabricatorRecipe.redstone, 4, FabricatorRecipe.leadPlate, 2, TGItems.NUCLEAR_POWERCELL_EMPTY, 1);		
-		
+		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.POWER_ARMOR_PLATING, 2)), 1, FabricatorRecipe.circuit_elite, 4, FabricatorRecipe.mechanicalPartsT3, 2, FabricatorRecipe.ingotHellish, 8, TGItems.MK2_POWER_PLATE, 2);
+		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.INGOT_HELLISH, 4)), 1, FabricatorRecipe.carbonFibers, 4, FabricatorRecipe.mechanicalPartsT3, 2, FabricatorRecipe.titaniumPlate, 2, TGItems.DOOM_PLATE, 2);
+
 		/**
 		 * Camo Bench
 		 */
@@ -253,7 +254,10 @@ public class TGMachineRecipes {
 										/**
 										 * ID (STR), INPUT-STACK, FOCUS, FLUID_TYPE, ITEM_OUTPUTS, TICKS, REQ_COMPLETION, INTENSITY, INTENSITY_MARGIN, LIQUIDLEVEL, LIQUID_CONSUMPTION, INSTABILITY_CHANCE, RISK, RF_TICK
 										 */
-		ReactionChamberRecipe.addRecipe("RC_UV_WHEAT",new ItemStackOreDict(new ItemStack(Items.WHEAT_SEEDS, 1)), TGItems.RC_UV_EMITTER, FluidRegistry.WATER, new ItemStack[]{new ItemStack(Items.WHEAT,1), new ItemStack(Items.WHEAT_SEEDS,2)}, 10, 5, 3, 1, 1, 1000, 0.5f, RiskType.EXPLOSION_LOW,50000);
+		ReactionChamberRecipe.addRecipe("RC_UV_WHEAT",new ItemStackOreDict(new ItemStack(Items.WHEAT_SEEDS, 1)), TGItems.RC_UV_EMITTER, FluidRegistry.WATER, new ItemStack[]{new ItemStack(Items.WHEAT,3), new ItemStack(Items.WHEAT_SEEDS,6)}, 10, 5, 3, 1, 1, 1000, 0.5f, RiskType.EXPLOSION_LOW,30000);
+		ReactionChamberRecipe.addRecipe("RC_UV_CARROT",new ItemStackOreDict(new ItemStack(Items.CARROT, 1)), TGItems.RC_UV_EMITTER, FluidRegistry.WATER, new ItemStack[]{new ItemStack(Items.CARROT,8)}, 10, 5, 3, 1, 1, 1000, 0.5f, RiskType.EXPLOSION_LOW,30000);
+		ReactionChamberRecipe.addRecipe("RC_UV_POTATO",new ItemStackOreDict(new ItemStack(Items.POTATO, 1)), TGItems.RC_UV_EMITTER, FluidRegistry.WATER, new ItemStack[]{new ItemStack(Items.POTATO,8)}, 10, 5, 3, 1, 1, 1000, 0.5f, RiskType.EXPLOSION_LOW,30000);
+		ReactionChamberRecipe.addRecipe("RC_UV_POTATOPOISONED",new ItemStackOreDict(new ItemStack(Items.POISONOUS_POTATO, 1)), TGItems.RC_UV_EMITTER, FluidRegistry.WATER, new ItemStack[]{new ItemStack(Items.POTATO,4)}, 10, 5, 3, 1, 1, 1000, 0.5f, RiskType.EXPLOSION_LOW,30000);
 		
 		ReactionChamberRecipe.addRecipe("RC_LASER_FOCUS",new ItemStackOreDict("gemDiamond",1), TGItems.RC_HEAT_RAY, TGFluids.LIQUID_REDSTONE, new ItemStack[]{TGItems.newStack(TGItems.LASER_FOCUS, 1)}, 10, 5, 3, 1, 4, 4000, 0.5f, RiskType.BREAK_ITEM,100000);
 		
@@ -264,6 +268,8 @@ public class TGMachineRecipes {
 		ReactionChamberRecipe.addRecipe("RC_GLOWSTONE",new ItemStackOreDict("blockRedstone"), TGItems.RC_HEAT_RAY, TGFluids.LAVA, new ItemStack[]{new ItemStack(Blocks.GLOWSTONE, 1)}, 5, 3, 7, 2, 4, 1000,0.5f, RiskType.EXPLOSION_MEDIUM, 250000);
 		
 		ReactionChamberRecipe.addRecipe("RC_ANTIGRAV",new ItemStackOreDict(new ItemStack(Items.NETHER_STAR)), TGItems.RC_HEAT_RAY, TGFluids.LIQUID_ENDER, new ItemStack[]{TGItems.newStack(TGItems.ANTI_GRAV_CORE, 1)}, 10, 7, 8, 2, 4, 4000, 1f, RiskType.EXPLOSION_LOW, 500000);
+
+		ReactionChamberRecipe.addRecipe("RC_HELLISHINGOT",new ItemStackOreDict(TGItems.newStack(TGItems.INGOT_TITANIUM, 1)), TGItems.RC_UV_EMITTER, TGFluids.LIQUID_TRITIUM, new ItemStack[]{TGItems.newStack(TGItems.INGOT_HELLISH, 1)}, 10, 3, 6, 3, 7, 2000, 1f, RiskType.EXPLOSION_MEDIUM, 100000);
 		
 		ReactionChamberRecipe.addRecipe("RC_URANIUM",new ItemStackOreDict("dustUranium"), TGItems.RC_HEAT_RAY, TGFluids.WATER, new ItemStack[]{TGItems.newStack(TGItems.ENRICHED_URANIUM, 1)}, 5, 4, 7, 0, 3, 1000, 0f, RiskType.BREAK_ITEM, 250000);
 		

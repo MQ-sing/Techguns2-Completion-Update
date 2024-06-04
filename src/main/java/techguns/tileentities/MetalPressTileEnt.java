@@ -222,7 +222,7 @@ public class MetalPressTileEnt extends BasicMachineTileEnt {
 			return SLOT_INPUT1;
 		} else if(!this.input1.get().isEmpty() && this.input2.get().isEmpty() && (!MetalPressRecipes.getOutputFor(this.input1.get(),item).isEmpty())){
 			return SLOT_INPUT2;
-		} else if( !item.isEmpty() && item.getItem()==TGItems.MACHINE_UPGRADE_STACK.getItem() && item.getItemDamage()==TGItems.MACHINE_UPGRADE_STACK.getItemDamage()){
+		} else if(TGItems.isMachineUpgrade(item)) {
 			return SLOT_UPGRADE;
 		}
 		return -1;

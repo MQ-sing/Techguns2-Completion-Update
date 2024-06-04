@@ -46,7 +46,6 @@ import techguns.api.npc.INpcTGDamageSystem;
 import techguns.capabilities.TGSpawnerNPCData;
 import techguns.client.audio.TGSoundCategory;
 import techguns.damagesystem.TGDamageSource;
-import techguns.entities.projectiles.AlienBlasterProjectile;
 import techguns.entities.projectiles.EnumBulletFirePos;
 import techguns.entities.projectiles.GenericProjectile;
 import techguns.entities.projectiles.RocketProjectile;
@@ -252,8 +251,7 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
                 	
 
                    TGPackets.network.sendToAllAround(new PacketPlaySound(TGSounds.NETHERBLASTER_FIRE, this.parentEntity, 1.0f, 1.0f, false, false, TGSoundCategory.GUN_FIRE), TGPackets.targetPointAroundEnt(parentEntity, 100.0f));
-            	    //RocketProjectile rocket = new RocketProjectile(this.parentEntity.world, this.parentEntity,12.0f, 1.0f, 100, 0.05f, 30, 40, 8.0f, 0.25f,false,this.parentEntity.rand.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT, 4.0f, 0.0f);         
-                   AlienBlasterProjectile rocket = new AlienBlasterProjectile(this.parentEntity.world, parentEntity, 10, 1.5f, 200, 0.05f, 200, 200, 10, 0, false, EnumBulletFirePos.CENTER);
+                   RocketProjectile rocket = new RocketProjectile(this.parentEntity.world, this.parentEntity,12.0f, 1.0f, 100, 0.05f, 30, 40, 8.0f, 0.25f,false,this.parentEntity.rand.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT, 4.0f, 0.0f);
             	    
             	    world.spawnEntity(rocket);
                 	
@@ -367,8 +365,7 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
                              this.parentEntity.world.spawnEntity(entitysmallfireball);
                          }*/
                         // TGPackets.network.sendToAllAround(new PacketPlaySound(TGSounds.NETHERBLASTER_FIRE, this.parentEntity, 1.0f, 1.0f, false, false, TGSoundCategory.GUN_FIRE), TGPackets.targetPointAroundEnt(parentEntity, 100.0f));
-                 	    //RocketProjectile rocket = new RocketProjectile(this.parentEntity.world, this.parentEntity,12.0f, 1.0f, 100, 0.05f, 30, 40, 8.0f, 0.25f,false,this.parentEntity.rand.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT, 4.0f, 0.0f);         
-                        AlienBlasterProjectile rocket = new AlienBlasterProjectile(this.parentEntity.world, parentEntity, 6, 1.5f, 200, 0.05f, 200, 200, 6, 0, false, EnumBulletFirePos.CENTER);
+                 	    RocketProjectile rocket = new RocketProjectile(this.parentEntity.world, this.parentEntity,12.0f, 1.0f, 100, 0.05f, 30, 40, 8.0f, 0.25f,false,this.parentEntity.rand.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT, 4.0f, 0.0f);
                  	    
                  	    this.parentEntity.world.spawnEntity(rocket);
                          

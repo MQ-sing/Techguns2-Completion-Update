@@ -47,7 +47,6 @@ public class RecipeJsonConverter {
 		private static HashMap<String,String> factories = new HashMap<>();
 		static {
 			factories.put(Recipewriter.hardenedGlassOrGlass, OreDictIngredientHardenedGlass.class.getName());
-			factories.put(Recipewriter.electrumOrGold, OreDictIngredientElectrumOrGold.class.getName());
 			factories.put(Recipewriter.itemStackHasNBTInt, IngredientFactoryMatchNBTInt.class.getName());
 		}
 
@@ -76,7 +75,6 @@ public class RecipeJsonConverter {
 						return name.endsWith(".json");
 					}
 				});
-				System.out.println("Deleting recipes, THIS SHOULD ONLY BE DONE IN DEV ENVIRONMENT!!!");
 				Arrays.stream(files).forEach(f -> {
 					f.delete();
 				});
@@ -265,11 +263,6 @@ public class RecipeJsonConverter {
 
 			boolean isOreDict = false;
 			List<Map<String, Object>> ingredients = new ArrayList<>();
-			/*for (Object o : components) {
-				if (o instanceof String)
-					isOreDict = true;
-				ingredients.add(serializeItem(o));
-			}*/
 			ingredients.add(serializeItem(new ItemStack(gun,1)));
 			ingredients.add(serializeItem(type.getAmmo(type.getIDforVariantKey(key))[0]));
 			ItemStack result = new ItemStack(gun,1);
@@ -278,9 +271,6 @@ public class RecipeJsonConverter {
 			json.put("type", "techguns:"+AMMO_CHANGE_COPY_NBT_RECIPE);
 			json.put("result", serializeItem(result));
 
-			// names the json the same name as the output's registry name
-			// repeatedly adds _alt if a file already exists
-			// janky I know but it works
 			String suffix = "_ammo_"+key;
 			
 			String name = result.getItem().getRegistryName().getResourcePath();
@@ -310,11 +300,6 @@ public class RecipeJsonConverter {
 
 			boolean isOreDict = false;
 			List<Map<String, Object>> ingredients = new ArrayList<>();
-			/*for (Object o : components) {
-				if (o instanceof String)
-					isOreDict = true;
-				ingredients.add(serializeItem(o));
-			}*/
 			ingredients.add(serializeItemNBTTag(new ItemStack(gun,1),key, value));
 			ingredients.add(serializeItem(upgradeItem));
 			ItemStack result = new ItemStack(gun,1);
@@ -323,9 +308,6 @@ public class RecipeJsonConverter {
 			json.put("type", "techguns:"+MiningToolUpgradeHeadRecipeFactory.MINING_TOOL_UPGRADE_RECIPE);
 			json.put("result", serializeItem(result));
 
-			// names the json the same name as the output's registry name
-			// repeatedly adds _alt if a file already exists
-			// janky I know but it works
 			String suffix = "_upgrade_"+upgradeItem.getItem().getUnlocalizedName();
 			
 			String name = result.getItem().getRegistryName().getResourcePath();
@@ -387,7 +369,6 @@ public class RecipeJsonConverter {
 				}
 			}
 			json.put("key", key);
-			//json.put("type", isOreDict ? "forge:ore_shaped" : "minecraft:crafting_shaped");
 			json.put("type", type.toString());
 			json.put("result", serializeItem(result));
 
@@ -475,17 +456,6 @@ public class RecipeJsonConverter {
 			}
 			
 			ret.put("nbt", tags_m);
-			
-			/*if (stack.getItem().getHasSubtypes() || stack.getItemDamage() != 0) {
-				ret.put("data", stack.getItemDamage());
-			}*/
-			/*if (stack.getCount() > 1) {
-				ret.put("count", stack.getCount());
-			}*/
-			
-			/*if (stack.hasTagCompound()) {
-				throw new IllegalArgumentException("nbt not implemented");
-			}*/
 
 			return ret;
 			

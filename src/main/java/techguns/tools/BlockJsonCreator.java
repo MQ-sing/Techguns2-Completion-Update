@@ -15,7 +15,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.util.ResourceLocation;
 import techguns.Techguns;
 import techguns.blocks.GenericBlockMetaEnum;
-import techguns.util.TGLogger;
 
 public class BlockJsonCreator {
 
@@ -28,7 +27,6 @@ public class BlockJsonCreator {
 		File f = new File(prefix+blocks+name+".json");
 		
 		if(!f.exists()){
-			TGLogger.logger_client.log(Level.INFO, "Creating Block Model JSON:"+f.getAbsolutePath());
 			
 			Writer writer;
 			try {
@@ -62,7 +60,6 @@ public class BlockJsonCreator {
 		File f = new File(prefix+blockstates+blockname+".json");
 		//TGLogger.logger_client.log(Level.INFO, "Checking Item JSON:"+f.getAbsolutePath());
 		if(!f.exists()){
-			TGLogger.logger_client.log(Level.INFO, "Creating Blockstate JSON:"+f.getAbsolutePath());
 			
 			Writer writer;
 			try {

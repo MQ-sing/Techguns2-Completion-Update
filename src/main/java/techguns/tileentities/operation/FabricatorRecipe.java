@@ -29,6 +29,9 @@ public class FabricatorRecipe implements IMachineRecipe{
 	public static ItemStackOreDict circuit_elite;  
 	
 	public static ItemStackOreDict mechanicalPartsT3 = new ItemStackOreDict(TGItems.MECHANICAL_PARTS_CARBON,1);
+	public static ItemStackOreDict carbonFibers = new ItemStackOreDict(TGItems.CARBON_FIBERS,1);
+
+	public static ItemStackOreDict ingotHellish = new ItemStackOreDict(TGItems.INGOT_HELLISH,1);
 	
 	public static ItemStackOreDict carbonPlate;  
 	public static ItemStackOreDict titaniumPlate;
@@ -60,6 +63,7 @@ public class FabricatorRecipe implements IMachineRecipe{
 		items_wireslot.add(goldWires);
 		items_wireslot.add(circuit_basic);
 		items_wireslot.add(circuit_elite);
+		items_wireslot.add(carbonFibers);
 		
 		items_powderslot.add(redstone);
 		items_powderslot.add(mechanicalPartsT3);
@@ -68,6 +72,7 @@ public class FabricatorRecipe implements IMachineRecipe{
 		items_plateslot.add(carbonPlate);
 		items_plateslot.add(titaniumPlate);
 		items_plateslot.add(leadPlate);
+		items_plateslot.add(ingotHellish);
 	}
 
 	

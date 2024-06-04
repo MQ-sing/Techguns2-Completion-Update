@@ -68,6 +68,7 @@ public class SuperMutantBasic extends GenericNPC {
 			case ICE:
 				return 10.0f;
 			case PHYSICAL:
+				return 8.0f;
 			case PROJECTILE:
 				return 7.0f;
 			case POISON:
@@ -91,8 +92,8 @@ public class SuperMutantBasic extends GenericNPC {
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(50.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(1D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(1.5D);
 	}
 
 	
@@ -108,17 +109,14 @@ public class SuperMutantBasic extends GenericNPC {
 				weapon = TGuns.rocketlauncher;
 				break;
 			case 1:
-				weapon = TGuns.ak47;
+				weapon = TGuns.pulserifle;
 				break;
 			case 2:
-				weapon = TGuns.combatshotgun;
+				weapon = TGuns.blasterrifle;
 				break;
 			default:
 				weapon = TGuns.lasergun;
 				break;
-			/*default:
-				weapon = Items.IRON_SHOVEL;
-				break;*/
 		}
 		if (weapon != null) this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(weapon));
 	}

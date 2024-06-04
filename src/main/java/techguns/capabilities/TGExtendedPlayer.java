@@ -80,7 +80,7 @@ public class TGExtendedPlayer implements ITGExtendedPlayer {
 	public boolean enableJetpack=true;
 	public boolean enableStepAssist=true;
 	public boolean enableNightVision=false;
-	public boolean enableSafemode=false;
+	public boolean enableSafemode=true;
 	
 	/**
 	 * for jetpack

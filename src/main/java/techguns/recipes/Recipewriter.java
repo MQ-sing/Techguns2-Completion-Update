@@ -1,50 +1,6 @@
 package techguns.recipes;
 
-import static techguns.TGArmors.steam_Boots;
-import static techguns.TGArmors.steam_Chestplate;
-import static techguns.TGArmors.steam_Helmet;
-import static techguns.TGArmors.steam_Leggings;
-import static techguns.TGArmors.t1_combat_Boots;
-import static techguns.TGArmors.t1_combat_Chestplate;
-import static techguns.TGArmors.t1_combat_Helmet;
-import static techguns.TGArmors.t1_combat_Leggings;
-import static techguns.TGArmors.t1_miner_Boots;
-import static techguns.TGArmors.t1_miner_Chestplate;
-import static techguns.TGArmors.t1_miner_Helmet;
-import static techguns.TGArmors.t1_miner_Leggings;
-import static techguns.TGArmors.t1_scout_Boots;
-import static techguns.TGArmors.t1_scout_Chestplate;
-import static techguns.TGArmors.t1_scout_Helmet;
-import static techguns.TGArmors.t1_scout_Leggings;
-import static techguns.TGArmors.t2_beret;
-import static techguns.TGArmors.t2_combat_Boots;
-import static techguns.TGArmors.t2_combat_Chestplate;
-import static techguns.TGArmors.t2_combat_Helmet;
-import static techguns.TGArmors.t2_combat_Leggings;
-import static techguns.TGArmors.t2_commando_Boots;
-import static techguns.TGArmors.t2_commando_Chestplate;
-import static techguns.TGArmors.t2_commando_Helmet;
-import static techguns.TGArmors.t2_commando_Leggings;
-import static techguns.TGArmors.t2_riot_Boots;
-import static techguns.TGArmors.t2_riot_Chestplate;
-import static techguns.TGArmors.t2_riot_Helmet;
-import static techguns.TGArmors.t2_riot_Leggings;
-import static techguns.TGArmors.t3_combat_Boots;
-import static techguns.TGArmors.t3_combat_Chestplate;
-import static techguns.TGArmors.t3_combat_Helmet;
-import static techguns.TGArmors.t3_combat_Leggings;
-import static techguns.TGArmors.t3_exo_Boots;
-import static techguns.TGArmors.t3_exo_Chestplate;
-import static techguns.TGArmors.t3_exo_Helmet;
-import static techguns.TGArmors.t3_exo_Leggings;
-import static techguns.TGArmors.t3_miner_Boots;
-import static techguns.TGArmors.t3_miner_Chestplate;
-import static techguns.TGArmors.t3_miner_Helmet;
-import static techguns.TGArmors.t3_miner_Leggings;
-import static techguns.TGArmors.t3_power_Boots;
-import static techguns.TGArmors.t3_power_Chestplate;
-import static techguns.TGArmors.t3_power_Helmet;
-import static techguns.TGArmors.t3_power_Leggings;
+import static techguns.TGArmors.*;
 import static techguns.TGItems.ADVANCED_MAGAZINE;
 import static techguns.TGItems.ADVANCED_MAGAZINE_EMPTY;
 import static techguns.TGItems.ADVANCED_ROUNDS;
@@ -183,7 +139,6 @@ import techguns.items.guns.ammo.AmmoType;
 public class Recipewriter {
 
 	public static final String hardenedGlassOrGlass = "hardenedGlassOrGlass";
-	public static final String electrumOrGold = "electrumOrGold";
 	public static final String itemStackHasNBTInt = "itemstackHasNBTInt";
 	
 	public static void writeRecipes() {
@@ -210,7 +165,7 @@ public class Recipewriter {
         
         RecipeJsonConverter.addShapedRecipe(newStack(PUMP_MECHANISM, 1), "nnn", "gpg", "nnn", 'n', "nuggetIron", 'g', "blockGlass", 'p', Blocks.PISTON);
         
-        RecipeJsonConverter.addShapedRecipe(newStack(BARREL_LASER,1), "fff","ggl","fff", 'f', electrumOrGold, 'g', hardenedGlassOrGlass, 'l', LASER_FOCUS);
+        RecipeJsonConverter.addShapedRecipe(newStack(BARREL_LASER,1), "fff","ggl","fff", 'f', "ingotGold", 'g', hardenedGlassOrGlass, 'l', LASER_FOCUS);
         
         RecipeJsonConverter.addShapedRecipe(newStack(HEAVY_CLOTH,3), " w ","wlw"," w ", 'w', Blocks.WOOL, 'l', Items.LEATHER);
         
@@ -503,6 +458,9 @@ public class Recipewriter {
         RecipeJsonConverter.addShapedRecipe(newStack(TGItems.UPGRADE_PROTECTION_3,1), "pip","igi","pip", 'p', "plateCarbon", 'g', "gemDiamond", 'i', "plateIron");
         RecipeJsonConverter.addShapedRecipe(newStack(TGItems.UPGRADE_BLAST_PROTECTION_3,1), "pip","igi","pip", 'p', "plateCarbon", 'g', "gemDiamond", 'i', "blockWool");
         RecipeJsonConverter.addShapedRecipe(newStack(TGItems.UPGRADE_PROJECTILE_PROTECTION_3,1), "pip","igi","pip", 'p', "plateCarbon", 'g', "gemDiamond", 'i', TGItems.STEAMARMOR_PLATE);
+
+        RecipeJsonConverter.addShapedRecipe(newStack(TGItems.REINFORCED_ELECTRIC_ENGINE, 1), " is", " f ", "si ", 's', TGItems.ELECTRIC_ENGINE, 'f', TGItems.INGOT_HELLISH, 'i', TGItems.QUARTZ_ROD);
+        RecipeJsonConverter.addShapedRecipe(newStack(TGItems.RC_UV_EMITTER, 1), "sss", "fif", "ttt", 's', "plateSteel", 'f', TGItems.CIRCUIT_BOARD_ELITE, 'i', TGItems.UV_ELEMENT, 't', hardenedGlassOrGlass);
         
         addGunRecipes();
         addArmorRecipes();
@@ -531,8 +489,6 @@ public class Recipewriter {
 				});
 			}
 		});
-		//RecipeJsonConverter.addShapelessAmmoSwapRecipe(TGuns.combatshotgun, AmmoTypes.SHOTGUN_ROUNDS, AmmoTypes.TYPE_INCENDIARY);
-		//RecipeJsonConverter.addShapelessAmmoSwapRecipe(TGuns.combatshotgun, AmmoTypes.SHOTGUN_ROUNDS, AmmoTypes.TYPE_DEFAULT);
 	}
 	
 	public static void addGunRecipes() {
@@ -596,8 +552,7 @@ public class Recipewriter {
 	         
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(powerhammer,1), " m ", "spr", " mc", 'p', new ItemStack(Blocks.PISTON,1), 'r', TGItems.RECEIVER_IRON, 'm', TGItems.MECHANICAL_PARTS_IRON, 's', "plateIron", 'c', TGItems.COMPRESSED_AIR_TANK);
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(powerhammer,1,powerhammer.getMaxDamage()), " m ", "spr", " mc", 'p', new ItemStack(Blocks.PISTON,1), 'r', TGItems.RECEIVER_IRON, 'm', TGItems.MECHANICAL_PARTS_IRON, 's', "plateIron", 'c', TGItems.COMPRESSED_AIR_TANK_EMPTY);
-	        	        
-	        //RecipeJsonConverter.addRecipe(new ShapelessOreRecipeCopyNBT(new ItemStack(powerHammerAdv,1), new ItemStack(powerHammer,1), "gemDiamond", "gemDiamond", "gemDiamond"));
+
 	        
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(teslagun,1), " gd", "crs", " e ", 'g', "paneGlass", 'd', "dustRedstone", 'c', TGItems.COIL, 'r', TGItems.RECEIVER_CARBON, 's', TGItems.STOCK_CARBON, 'e', TGItems.ENERGY_CELL);
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(teslagun,1,teslagun.getMaxDamage()), " gd", "crs", " e ", 'g', "paneGlass", 'd', "dustRedstone", 'c', TGItems.COIL, 'r', TGItems.RECEIVER_CARBON, 's', TGItems.STOCK_CARBON, 'e', TGItems.ENERGY_CELL_EMPTY);
@@ -606,8 +561,7 @@ public class Recipewriter {
 	        RecipeJsonConverter.addShapedCopyNBTRecipe(new ItemStack(goldenrevolver,1), "ggg","grg","ggg", 'g', "ingotGold", 'r', new ItemStack(revolver,1));
 	        
 	        RecipeJsonConverter.addShapedAmmoSumRecipe(new ItemStack(grimreaper,1), "rr ", "rrc", 'r', new ItemStack(guidedmissilelauncher,1,0), 'c', TGItems.RECEIVER_CARBON);
-	        
-	        //RecipeJsonConverter.addRecipe(new ShapelessOreRecipe(new ItemStack(m4_uq,1), new ItemStack(m4,1,OreDictionary.WILDCARD_VALUE), Items.nether_star));
+
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(m4_infiltrator,1), "gpg","wwm","rri", 'm', new ItemStack(m4,1), 'g', hardenedGlassOrGlass, 'p', "plateSteel", 'w', "blockWool",'i',"ingotSteel", 'r', "dustRedstone");
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(m4_infiltrator,1,m4_infiltrator.getMaxDamage()), "gpg","wwm","rri", 'm', new ItemStack(m4,1,m4.getMaxDamage()), 'g', hardenedGlassOrGlass, 'p', "plateSteel", 'w', "blockWool",'i',"ingotSteel", 'r', "dustRedstone");
 	                	        
@@ -623,9 +577,6 @@ public class Recipewriter {
 		
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(sonicshotgun,1), " p ", "ers", " c ", 'p', "plateTitanium", 'e', TGItems.SONIC_EMITTER, 'r', TGItems.RECEIVER_CARBON, 's', TGItems.STOCK_CARBON, 'c', TGItems.ENERGY_CELL);
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(sonicshotgun,1,sonicshotgun.getMaxDamage()), " p ", "ers", " c ", 'p', "plateTitanium", 'e', TGItems.SONIC_EMITTER, 'r', TGItems.RECEIVER_CARBON, 's', TGItems.STOCK_CARBON, 'c', TGItems.ENERGY_CELL_EMPTY);
-		
-	       // RecipeJsonConverter.addShapedRecipe(new ItemStack(nukeLauncher,1)," pp","rbb"," f ", 'r', TGItems.rocketAmmoNuclear, 'b', TGItems.BARREL_OBSIDIAN_STEEL, 'f', TGItems.RECEIVER_CARBON, 'p', "plateLead");
-	       // RecipeJsonConverter.addShapedRecipe(new ItemStack(nukeLauncher,1,nukeLauncher.getMaxDamage())," pp"," bb"," f ", 'b', TGItems.BARREL_OBSIDIAN_STEEL, 'f', TGItems.RECEIVER_CARBON, 'p', "plateLead");
 
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(nucleardeathray,1),"ltl","ers"," m ", 'l', "plateLead", 't', "plateTitanium", 'e', TGItems.RAD_EMITTER, 'r', TGItems.RECEIVER_CARBON, 's', TGItems.STOCK_CARBON, 'm', TGItems.NUCLEAR_POWERCELL);
 	        RecipeJsonConverter.addShapedRecipe(new ItemStack(nucleardeathray,1,nucleardeathray.getMaxDamage()),"ltl","ers"," m ", 'l', "plateLead", 't', "plateTitanium", 'e', TGItems.RAD_EMITTER, 'r', TGItems.RECEIVER_CARBON, 's', TGItems.STOCK_CARBON, 'm', TGItems.NUCLEAR_POWERCELL_EMPTY);
@@ -724,33 +675,20 @@ public class Recipewriter {
 		RecipeJsonConverter.addShapedRecipe(new ItemStack(TGArmors.hazmat_Chestplate,1), "f f","fff","fff", 'f', TGItems.PROTECTIVE_FIBER);
 		RecipeJsonConverter.addShapedRecipe(new ItemStack(TGArmors.hazmat_Leggings,1), "fff","f f","f f", 'f', TGItems.PROTECTIVE_FIBER);
 		RecipeJsonConverter.addShapedRecipe(new ItemStack(TGArmors.hazmat_Boots,1), "f f","f f", 'f', TGItems.PROTECTIVE_FIBER);
+
+        RecipeJsonConverter.addShapedRecipe(new ItemStack(t4_power_Helmet, 1), "isi","sfs", 'i', TGItems.REINFORCED_ELECTRIC_ENGINE, 's', TGItems.MK2_POWER_PLATE, 'f', new ItemStack(t3_power_Helmet,1,OreDictionary.WILDCARD_VALUE));
+        RecipeJsonConverter.addShapedRecipe(new ItemStack(t4_power_Chestplate, 1), "s s","ifi","sss", 'i', TGItems.REINFORCED_ELECTRIC_ENGINE, 's', TGItems.MK2_POWER_PLATE, 'f', new ItemStack(t3_power_Chestplate,1,OreDictionary.WILDCARD_VALUE));
+        RecipeJsonConverter.addShapedRecipe(new ItemStack(t4_power_Leggings, 1), "sss","ifi","s s", 'i', TGItems.REINFORCED_ELECTRIC_ENGINE, 's', TGItems.MK2_POWER_PLATE, 'f', new ItemStack(t3_power_Leggings,1,OreDictionary.WILDCARD_VALUE));
+        RecipeJsonConverter.addShapedRecipe(new ItemStack(t4_power_Boots, 1), "i i","sfs", 'i', TGItems.REINFORCED_ELECTRIC_ENGINE, 's', TGItems.MK2_POWER_PLATE, 'f', new ItemStack(t3_power_Boots,1,OreDictionary.WILDCARD_VALUE));
+
+        RecipeJsonConverter.addShapedRecipe(new ItemStack(t4_praetor_Helmet, 1), "isi","sfs", 'i', TGItems.REINFORCED_ELECTRIC_ENGINE, 's', TGItems.DOOM_PLATE, 'f', new ItemStack(t3_miner_Helmet,1,OreDictionary.WILDCARD_VALUE));
+        RecipeJsonConverter.addShapedRecipe(new ItemStack(t4_praetor_Chestplate, 1), "s s","ifi","sss", 'i', TGItems.REINFORCED_ELECTRIC_ENGINE, 's', TGItems.DOOM_PLATE, 'f', new ItemStack(t3_miner_Chestplate,1,OreDictionary.WILDCARD_VALUE));
+        RecipeJsonConverter.addShapedRecipe(new ItemStack(t4_praetor_Leggings, 1), "sss","ifi","s s", 'i', TGItems.REINFORCED_ELECTRIC_ENGINE, 's', TGItems.DOOM_PLATE, 'f', new ItemStack(t3_miner_Leggings,1,OreDictionary.WILDCARD_VALUE));
+        RecipeJsonConverter.addShapedRecipe(new ItemStack(t4_praetor_Boots, 1), "i i","sfs", 'i', TGItems.REINFORCED_ELECTRIC_ENGINE, 's', TGItems.DOOM_PLATE, 'f', new ItemStack(t3_miner_Boots,1,OreDictionary.WILDCARD_VALUE));
 		
         RecipeJsonConverter.addShapedRecipe(new ItemStack(TGArmors.riot_shield,1), "igi","isi", "igi", 'i', "ingotSteel", 'g', "paneGlass", 's', Items.SHIELD);
         RecipeJsonConverter.addShapedRecipe(new ItemStack(TGArmors.ballistic_shield,1), "igi","isi", "iii", 'i', "plateObsidianSteel", 'g', "paneGlass", 's', Items.SHIELD);
         RecipeJsonConverter.addShapedRecipe(new ItemStack(TGArmors.advanced_shield,1), "igi","isi", "iii", 'i', "plateCarbon", 'g', "paneGlass", 's', Items.SHIELD);
         
-	}
-	
-	public static void notyetimplemented() {
-   /*     
-        
-     
-     //	       
-      
-        RecipeJsonConverter.addShapedRecipe(new ItemStack(TGItems.oreClusterScanner,1), "g g", "pcp","pep", 'g', "wireGold", 'p', "plateSteel", 'c', "circuitElite", 'e', TGItems.energyCell));
-	
-	
-        RecipeJsonConverter.addShapedRecipe(new ItemStack(TGBlocks.metalpanel,32,0), "sss","sps","sss", 's', "stone", 'p', "plateCopper"));
-        RecipeJsonConverter.addShapedRecipe(new ItemStack(TGBlocks.metalpanel2,64,0), "sss","psp","sss", 's', "stone", 'p', "plateCopper"));
-          
-        RecipeJsonConverter.addShapedRecipe(new ItemStack(TGItems.camoNetPlacer,1,0),"sns",'s',"stickWood", 'n', new ItemStack(TGBlocks.camoNetPane,1,0)));
-        RecipeJsonConverter.addShapedRecipe(new ItemStack(TGItems.camoNetPlacer,1,1),"sns",'s',"stickWood", 'n', new ItemStack(TGBlocks.camoNetPane,1,1)));
-        RecipeJsonConverter.addShapedRecipe(new ItemStack(TGItems.camoNetPlacer,1,2),"sns",'s',"stickWood", 'n', new ItemStack(TGBlocks.camoNetPane,1,2)));
-        
-
-                
-        RecipeJsonConverter.addShapedRecipe(new ItemStack(TGBlocks.tgchest,1), "n n", " c ", "n n", 'c', Blocks.chest, 'n', "nuggetIron"));
-        RecipeJsonConverter.addShapedRecipe(new ItemStack(TGBlocks.tgchest_weapon,1), "pcp", 'c', Blocks.chest, 'p', "plateIron"));
-        */
 	}
 }

@@ -1,36 +1,56 @@
 buildscript {
     repositories {
-        jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+		maven { url = "https://maven.minecraftforge.net/" }
+		maven { url = "https://files.minecraftforge.net/maven" }
+		mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+		classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
 
 
-version = "1.12.2-2.0.2.0-autisticfork-03"
+version = "1.12.2-2.0.2.1"
 group = "techguns" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "techguns"
 
-sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
-}
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    version = "1.12.2-14.23.5.2807"
-    runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   snapshot are built nightly.
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20180104"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+	mappings channel: 'snapshot', version: '20171003-1.12'
+	// makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+	// Default run configurations.
+	// These can be tweaked, removed, or duplicated as needed.
+	runs {
+		client {
+			workingDirectory project.file('run')
+
+			// Recommended logging data for a userdev environment
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+			// Recommended logging level for the console
+			property 'forge.logging.console.level', 'debug'
+		}
+
+		server {
+
+			// Recommended logging data for a userdev environment
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+			// Recommended logging level for the console
+			property 'forge.logging.console.level', 'debug'
+		}
+	}
 }
 
 repositories {
@@ -54,7 +74,7 @@ repositories {
 	//ivy { name "com.latmod.mods"; artifactPattern "http://mods.latmod.com/[module]/[revision]/[module]-[revision](-[classifier]).[ext]" }
 	maven { 
 		name="Latmods"
-		url "https://maven.latmod.com/"
+		url = "https://maven.latmod.com/"
 	}
 	maven {
 		name = "OpenComputers"
@@ -66,6 +86,7 @@ dependencies {
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
     //compile "some.group:artifact:version"
+	minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
       
     // real examples
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
@@ -95,35 +116,14 @@ dependencies {
 	// compile 'the-lost-cities:lostcities:1.12:2.0.12'
 	compile files('libs/lostcities-1.12-2.0.12.jar')
 	//compile 'com.latmod.mods:FTBLib:4.2.5:api'
-	deobfCompile "com.feed_the_beast.mods:FTBLib:5.4.0.64"
+	compile files('libs/FTBLib-5.4.0.64.jar')
 	
 	 // compile against the JEI API but do not include it at runtime
-	deobfProvided "mezz.jei:jei_${mc_version}:${jei_version}:api"
+	compileOnly fg.deobf("mezz.jei:jei_1.12.2:${jei_version}:api")
 	// at runtime, use the full JEI jar
-	runtime "mezz.jei:jei_${mc_version}:${jei_version}"
-	
-	deobfCompile "li.cil.oc:OpenComputers:${openComputersVersion}"
-}
+	runtimeOnly fg.deobf("mezz.jei:jei_1.12.2:${jei_version}")
 
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else except the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-	
-	rename '(.+_at.cfg)', 'META-INF/$1'
+	compile files('libs/OpenComputers-MC1.12.2-1.7.5.192.jar')
 }
 
 

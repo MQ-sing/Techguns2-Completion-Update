@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.*;
 import org.lwjgl.input.Keyboard;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -28,14 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -55,6 +48,7 @@ import techguns.capabilities.TGExtendedPlayer;
 import techguns.client.ClientProxy;
 import techguns.client.ShooterValues;
 import techguns.client.audio.TGSoundCategory;
+import techguns.core.TechgunsASMTransformer;
 import techguns.damagesystem.TGDamageSource;
 import techguns.deatheffects.EntityDeathUtils.DeathType;
 import techguns.entities.ai.EntityAIRangedAttack;
@@ -67,6 +61,7 @@ import techguns.items.armors.ICamoChangeable;
 import techguns.items.armors.TGArmorBonus;
 import techguns.items.guns.ammo.AmmoType;
 import techguns.items.guns.ammo.AmmoTypes;
+import techguns.items.guns.ammo.AmmoVariant;
 import techguns.items.guns.ammo.DamageModifier;
 import techguns.packets.GunFiredMessage;
 import techguns.packets.ReloadStartedMessage;
@@ -75,6 +70,9 @@ import techguns.util.InventoryUtil;
 import techguns.util.MathUtil;
 import techguns.util.SoundUtil;
 import techguns.util.TextUtil;
+
+import static techguns.TGuns.GUIDED_MISSILE_PROJECTILES;
+import static techguns.TGuns.ROCKET_PROJECTILES;
 
 public class GenericGun extends GenericItem implements IGenericGun, IItemTGRenderer, ICamoChangeable {
 	public static final float SOUND_DISTANCE=4.0f;
@@ -91,7 +89,7 @@ public class GenericGun extends GenericItem implements IGenericGun, IItemTGRende
 	SoundEvent rechamberSound = null;
 	int ammoCount; // ammo per reload
 	// float recoil = 25.0f;
-	float zoomMult = 0.0f;
+	float zoomMult = 1.0f;
 	boolean canZoom = false;
 	boolean toggleZoom = false;
 	float Xzoom = -0.4f;//-0.35f, 0.1f, 0.05f); //xyz
@@ -838,6 +836,100 @@ public class GenericGun extends GenericItem implements IGenericGun, IItemTGRende
 		String var = tags.getString("ammovariant");
 		if(var==null || var.equals("")) return AmmoTypes.TYPE_DEFAULT;
 		return var;
+	}
+
+	public void setCurrentAmmoVariant(ItemStack stack, String variant) {
+		NBTTagCompound tags = stack.getTagCompound();
+		if (tags == null) {
+			this.onCreated(stack, null, null); // world and player are not needed
+			tags = stack.getTagCompound();
+		}
+		tags.setString("ammovariant", variant);
+	}
+
+	public void toggleAmmoType(ItemStack item, World world, EntityPlayer player, EnumHand hand) {
+		TGExtendedPlayer extendedPlayer = TGExtendedPlayer.get(player);
+
+		if (extendedPlayer.getFireDelay(hand) <= 0) {
+			if(this.projectile_selector.ammoType.hasMultipleVariants()){
+				int oldAmmo = this.getCurrentAmmo(item);
+				int currentVariant = this.getCurrentAmmoVariant(item);
+				List<AmmoVariant> variants = this.projectile_selector.ammoType.getVariants();
+				int nextVariant = (currentVariant + 1) % variants.size();
+				String newVariantString = variants.get(nextVariant).getKey();
+				if (this.projectile_selector == ROCKET_PROJECTILES || this.projectile_selector == GUIDED_MISSILE_PROJECTILES) {
+					int ammoCount = this.getCurrentAmmo(item);
+					this.useAmmo(item, oldAmmo);
+					Techguns.LOGGER.debug("Ammo count: {}", ammoCount);
+					for (int i = 0; i < ammoCount; i++) {
+						Techguns.LOGGER.debug("I: {}", i);
+						int amount = InventoryUtil.addAmmoToPlayerInventory(player, TGItems.newStack(this.getAmmoType().getBullet(currentVariant)[0], 1));
+						Techguns.LOGGER.debug("Amount: {}", amount);
+						if (amount > 0 && !world.isRemote) {
+							player.world.spawnEntity(new EntityItem(player.world, player.posX, player.posY, player.posZ, TGItems.newStack(this.ammoType.getBullet(currentVariant)[0], amount)));
+						}
+
+					}
+				} else if (oldAmmo == this.clipsize) {
+					this.useAmmo(item, oldAmmo);
+					int ammos = this.getAmmoType().getEmptyMag().length;
+					for (int i = 0; i < ammos; i++) {
+						if (!this.ammoType.getEmptyMag()[i].isEmpty()) {
+							int amount = InventoryUtil.addAmmoToPlayerInventory(player, TGItems.newStack(this.getAmmoType().getAmmo(currentVariant)[i], 1));
+							if (amount > 0 && !world.isRemote) {
+								player.world.spawnEntity(new EntityItem(player.world, player.posX, player.posY, player.posZ, TGItems.newStack(this.ammoType.getAmmo(currentVariant)[i], amount)));
+							}
+						}
+					}
+				} else if (oldAmmo > 0) {
+					this.useAmmo(item, oldAmmo);
+
+					int ammos = this.getAmmoType().getEmptyMag().length;
+					for (int i = 0; i < ammos; i++) {
+						if (!this.ammoType.getEmptyMag()[i].isEmpty()) {
+							int amount = InventoryUtil.addAmmoToPlayerInventory(player, TGItems.newStack(this.ammoType.getEmptyMag()[i], 1));
+							if (amount > 0 && !world.isRemote) {
+								player.world.spawnEntity(new EntityItem(player.world, player.posX, player.posY, player.posZ, TGItems.newStack(this.ammoType.getEmptyMag()[i], amount)));
+
+								int bulletsBack = (int) Math.floor(oldAmmo / this.ammoType.getShotsPerBullet(clipsize, oldAmmo));
+								if (bulletsBack > 0) {
+									int amount2 = InventoryUtil.addAmmoToPlayerInventory(player, TGItems.newStack(this.ammoType.getBullet(currentVariant)[i], bulletsBack));
+									if (amount2 > 0 && !world.isRemote) {
+										player.world.spawnEntity(new EntityItem(player.world, player.posX, player.posY, player.posZ, TGItems.newStack(this.ammoType.getBullet(currentVariant)[i], amount2)));
+									}
+								}
+							}
+						}
+					}
+				}
+				this.setCurrentAmmoVariant(item, newVariantString);
+
+				if (InventoryUtil.consumeAmmoPlayer(player, this.getReloadItem(item))) {
+					extendedPlayer.setFireDelay(hand, 20);
+
+					if (ammoCount >1) {
+						int i =1;
+						while (i<(ammoCount-oldAmmo) && InventoryUtil.consumeAmmoPlayer(player,this.ammoType.getAmmo(this.getCurrentAmmoVariant(item)))){
+							i++;
+						}
+
+						this.reloadAmmo(item, i);
+					} else {
+						this.reloadAmmo(item);
+					}
+					player.world.playSound(player, player.posX, player.posY, player.posZ, TGSounds.SWITCH_AMMO_TYPE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
+					if (world.isRemote) {
+						client_startReload();
+					} else {
+						int msg_reloadtime = 0;
+						TGPackets.network.sendToAllAround(new ReloadStartedMessage(player, hand, msg_reloadtime, 0), new TargetPoint(player.dimension, player.posX, player.posY, player.posZ, 100.0f));
+					}
+				} else {
+					// TODO: "can't reload" sound
+				}
+			}
+		}
 	}
 	
 	/**

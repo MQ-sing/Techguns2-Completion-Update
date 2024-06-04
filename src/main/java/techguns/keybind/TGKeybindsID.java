@@ -35,4 +35,6 @@ public class TGKeybindsID {
 	public static final byte TOGGLE_STEP_ASSIST=8;
 	
 	public static final byte TOGGLE_HUD=9;
+
+	public static final byte TOGGLE_AMMO_TYPE = 10;
 }

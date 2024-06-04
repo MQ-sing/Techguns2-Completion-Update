@@ -50,6 +50,8 @@ public class TGFluids implements ITGInitializer {
 	public static Fluid ACID;
 	
 	public static Fluid LIQUID_ENDER;
+
+	public static Fluid LIQUID_TRITIUM;
 	
 	public static Fluid BIOFUEL;
 
@@ -162,13 +164,11 @@ public class TGFluids implements ITGInitializer {
 
 			LIQUID_REDSTONE = FluidRegistry.getFluid("redstone");
 			if (LIQUID_REDSTONE==null){
-		//		System.out.println("No Liquid Redstone, fallback to lava");
 				LIQUID_REDSTONE = LAVA;
 			}
 			
 			LIQUID_COAL = FluidRegistry.getFluid("coal");
 			if (LIQUID_COAL==null){
-		//		System.out.println("No Liquid coal, fallback to oil/water");
 
 				LIQUID_COAL = WATER;
 				
@@ -176,13 +176,16 @@ public class TGFluids implements ITGInitializer {
 			
 			LIQUID_ENDER = FluidRegistry.getFluid("ender");
 			if (LIQUID_ENDER==null){
-//				System.out.println("No Liquid ender, fallback to lava");
 				LIQUID_ENDER = LAVA;
+			}
+
+			LIQUID_TRITIUM = FluidRegistry.getFluid("deuterium");
+			if (LIQUID_TRITIUM==null){
+				LIQUID_TRITIUM = LAVA;
 			}
 			
 			BIOFUEL = FluidRegistry.getFluid("biofuel");
 			if (BIOFUEL==null){
-		//		System.out.println("No Biofuel, fallback to lava");
 				BIOFUEL = LAVA;
 			}
 	}

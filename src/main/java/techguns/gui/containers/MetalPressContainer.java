@@ -83,13 +83,13 @@ public class MetalPressContainer extends BasicMachineContainer {
 				stack=stack1.copy();
 				if (!stack.isEmpty()){
 					
-					if (id >=MetalPressTileEnt.SLOT_INPUT1 && id<=MetalPressTileEnt.SLOT_UPGRADE){
+					if (id >=MetalPressTileEnt.SLOT_INPUT1 && id<4){
 						//PRESSED IN MACHINE GUI
-						if (!this.mergeItemStack(stack1, 3, 39, false)) {
+						if (!this.mergeItemStack(stack1, 4, 40, false)) {
 							return ItemStack.EMPTY;
 						}
 						slot.onSlotChange(stack1, stack);
-					} else if (id >=3 && id <39){
+					} else if (id >=4 && id <40){
 						
 						int validslot = tile.getValidSlotForItemInMachine(stack1);
 						//System.out.println("put it in slot"+validslot);

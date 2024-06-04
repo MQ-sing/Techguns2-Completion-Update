@@ -1297,6 +1297,13 @@
     ]
 },
 
+"guns.switchammo": {
+    "category": "player",
+    "sounds": [
+        "techguns:guns/ammo_type_switch"
+    ]
+},
+
 "effects.tfgexplosion": {
     "category": "ambient",
     "sounds": [

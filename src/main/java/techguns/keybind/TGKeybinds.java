@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import techguns.TGPackets;
+import techguns.Techguns;
 import techguns.api.guns.GunManager;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.items.guns.GenericGun;
@@ -25,6 +26,8 @@ public class TGKeybinds {
 	public static KeyBinding KEY_TOGGLE_SAFEMODE;
 	public static KeyBinding KEY_FORCE_RELOAD;
 	public static KeyBinding KEY_TOGGLE_JETPACK;
+
+	public static KeyBinding KEY_TOGGLE_AMMO_TYPE;
 	
 	/**
 	 * client only
@@ -37,12 +40,14 @@ public class TGKeybinds {
 		KEY_TOGGLE_STEPASSIST=new KeyBinding("techguns.key.toggleStepassist", Keyboard.KEY_V, "techguns.key.categories.techguns");
 		KEY_FORCE_RELOAD=new KeyBinding("techguns.key.forceReload", Keyboard.KEY_R, "techguns.key.categories.techguns");
 		KEY_TOGGLE_JETPACK=new KeyBinding("techguns.key.toggleJetpack", Keyboard.KEY_J, "techguns.key.categories.techguns");
+		KEY_TOGGLE_AMMO_TYPE = new KeyBinding("techguns.key.switchAmmo", Keyboard.KEY_T, "techguns.key.categories.techguns");
 		
 		ClientRegistry.registerKeyBinding(KEY_TOGGLE_NIGHTVISION);
 		ClientRegistry.registerKeyBinding(KEY_TOGGLE_SAFEMODE);
 		ClientRegistry.registerKeyBinding(KEY_TOGGLE_STEPASSIST);
 		ClientRegistry.registerKeyBinding(KEY_FORCE_RELOAD);
 		ClientRegistry.registerKeyBinding(KEY_TOGGLE_JETPACK);
+		ClientRegistry.registerKeyBinding(KEY_TOGGLE_AMMO_TYPE);
 	}
 	
 	@SubscribeEvent
@@ -55,13 +60,39 @@ public class TGKeybinds {
         } else if(KEY_TOGGLE_JETPACK.isPressed()){
         	TGPackets.network.sendToServer(new PacketTGKeybindPress(TGKeybindsID.TOGGLE_JETPACK,true));
         } else if(KEY_TOGGLE_STEPASSIST.isPressed()){
-        	
-        	/*TechgunsExtendedPlayerProperties props = TechgunsExtendedPlayerProperties.get(Minecraft.getMinecraft().thePlayer);
-        	if (props!=null){
-        		props.enableStepAssist=!props.enableStepAssist;
-        	}*/
         	TGPackets.network.sendToServer(new PacketTGKeybindPress(TGKeybindsID.TOGGLE_STEP_ASSIST,true));
-        } else if (KEY_FORCE_RELOAD.isPressed()){
+        } else if (KEY_TOGGLE_AMMO_TYPE.isPressed()) {
+			EntityPlayer ply = Minecraft.getMinecraft().player;
+			TGExtendedPlayer props = TGExtendedPlayer.get(Minecraft.getMinecraft().player);
+			if (props!=null) {
+
+				ItemStack stack_main = ply.getHeldItemMainhand();
+				ItemStack stack_off = ply.getHeldItemOffhand();
+				EnumHand hand = EnumHand.MAIN_HAND;
+				ItemStack gunToReload = stack_main;
+				double ammoPercent = 0;
+				double ammoPercent_off = 0;
+				Techguns.LOGGER.debug("Mainhand: {}, Offhand: {}", stack_main, stack_off);
+				if(stack_main.getItem() instanceof GenericGun){
+					GenericGun gunMain = (GenericGun) stack_main.getItem();
+					ammoPercent = gunMain.getPercentAmmoLeft(stack_main);
+				}
+				if(stack_off.getItem() instanceof GenericGun){
+					GenericGun gunOff = (GenericGun) stack_off.getItem();
+					ammoPercent_off = gunOff.getPercentAmmoLeft(stack_off);
+					if (ammoPercent_off < ammoPercent) {
+						hand = EnumHand.OFF_HAND;
+						gunToReload = stack_off;
+					}
+				}
+				boolean isAGun = gunToReload.getItem() instanceof GenericGun;
+				Techguns.LOGGER.debug("GunToReload: {}, GunToReloadItem: {}, is a gun: {}", gunToReload, gunToReload.getItem(), isAGun);
+				if(isAGun){
+					((GenericGun)gunToReload.getItem()).toggleAmmoType(gunToReload, ply.world,ply, hand);
+					TGPackets.network.sendToServer(new PacketTGKeybindPress(TGKeybindsID.TOGGLE_AMMO_TYPE, true));
+				}
+			}
+		} else if (KEY_FORCE_RELOAD.isKeyDown()){
         	EntityPlayer ply = Minecraft.getMinecraft().player;
         	
         	TGExtendedPlayer props = TGExtendedPlayer.get(Minecraft.getMinecraft().player);

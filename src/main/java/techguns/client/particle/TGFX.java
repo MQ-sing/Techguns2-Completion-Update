@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 import techguns.client.particle.TGParticleSystemType.AlphaEntry;
 import techguns.client.particle.TGParticleSystemType.ColorEntry;
 import techguns.client.render.TGRenderHelper.RenderType;
-import techguns.util.TGLogger;
 
 /**
  * Handles the loading and storage of all ParticleSystem types
@@ -39,7 +38,6 @@ public class TGFX {
 			List<TGParticleSystem> list = fxtype.createParticleSystems(world, posX, posY, posZ, motionX, motionY, motionZ);
 			return list;
 		}else {
-			TGLogger.logger_client.warning("FX '"+fx+"' not found!");
 			//System.out.println("FX '"+fx+"' not found!");
 			return null;
 		}
@@ -52,7 +50,6 @@ public class TGFX {
 			List<TGParticleSystem> list = fxtype.createParticleSystemsOnEntity(ent);
 			return list;
 		}else {
-			TGLogger.logger_client.warning("FX '"+fx+"' not found!");
 			return null;
 		}
 	}
@@ -64,7 +61,6 @@ public class TGFX {
 			List<TGParticleSystem> list = fxtype.createParticleSystemsOnParticle(worldIn, ent);
 			return list;
 		}else {
-			TGLogger.logger_client.warning("FX '"+fx+"' not found!");
 			return null;
 		}
 	}
@@ -76,7 +72,6 @@ public class TGFX {
 			List<TGParticleSystem> list = fxtype.createParticleSystemsOnEntityItemAttached(ent, hand);
 			return list;
 		}else {
-			TGLogger.logger_client.warning("FX '"+fx+"' not found!");
 			return null;
 		}
 	}
