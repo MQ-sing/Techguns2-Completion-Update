@@ -64,6 +64,7 @@ public class TGConfig {
 	public static int spawnWeightZombieMiner;
 	public static int spawnWeightZombiePigmanSoldier;
 	public static int spawnWeightCyberDemon;
+	public static int spawnWeightGhastling;
 	public static int spawnWeightSuperMutantBasic;
 	public static int spawnWeightSuperMutantElite;
 	public static int spawnWeightSuperMutantHeavy;
@@ -209,9 +210,11 @@ public class TGConfig {
 		
 		spawnWeightZombieMiner = config.getInt("SpawnWeightZombieMiner", "NPC Spawn", 200, 0, 10000, "Spawn weight for spawning Zombie Miners, at 0 spawn will not be registered");
 		
-		spawnWeightZombiePigmanSoldier  = config.getInt("SpawnWeightZombiePigmanSoldier", "NPC Spawn", 100, 0, 10000, "Spawn weight for spawning Zombie Pigman Soldiers (Nether only), at 0 spawn will not be registered");
+		spawnWeightZombiePigmanSoldier  = config.getInt("SpawnWeightZombiePigmanSoldier", "NPC Spawn", 80, 0, 10000, "Spawn weight for spawning Zombie Pigman Soldiers (Nether only), at 0 spawn will not be registered");
 		
 		spawnWeightCyberDemon = config.getInt("SpawnWeightCyberDemon", "NPC Spawn", 30, 0, 10000, "Spawn weight for spawning Cyber Demons (Nether only), at 0 spawn will not be registered");
+
+		spawnWeightGhastling = config.getInt("SpawnWeightGhastling", "NPC Spawn", 20, 0, 10000, "Spawn weight for spawning Ghastlings (Nether only), at 0 spawn will not be registered");
 
 		spawnWeightSuperMutantBasic = config.getInt("SpawnWeightSuperMutantBasic", "NPC Spawn", 100, 0, 10000, "Spawn weight for spawning Basic Super Mutants (End only), at 0 spawn will not be registered");
 
@@ -277,7 +280,7 @@ public class TGConfig {
 		cl_sortPassesPerTick = config.getInt("ParticleDepthSortPasses", CLIENTSIDE, 10, 0, 20, "How many bubble sort passes should be performed each tick on particles. 0=off. Clientside");
 		
 		
-		WIP_disableRadiationSystem = config.getBoolean("WIP_disableRadiationSystem", config.CATEGORY_GENERAL, true, "Disable Radiation for players. Radiation system is WIP, only use in creative for testing");
+		WIP_disableRadiationSystem = config.getBoolean("WIP_disableRadiationSystem", config.CATEGORY_GENERAL, false, "Disable Radiation for players. (Radiation system is still WIP)");
 
 		fluidListFuel = config.getStringList("FluidListFuel", "Fluid Recipes", new String[]{"fuel", "refined_fuel", "biofuel", "biodiesel", "diesel", "gasoline", "fluiddiesel", "fluidnitrodiesel", "fliudnitrofuel", "refined_biofuel", "fire_water", "rocket_fuel"}, "Fluids that can be used to fill up fuel tanks");
 		fluidListOil = config.getStringList("FluidListOil", "Fluid Recipes", new String[]{"oil", "tree_oil", "crude_oil", "fluidoil", "seed_oil"}, "Fluids that are treated as oil.");

@@ -43,6 +43,7 @@ import techguns.api.npc.factions.TGNpcFaction;
 import techguns.capabilities.TGSpawnerNPCData;
 import techguns.damagesystem.DamageSystem;
 import techguns.damagesystem.TGDamageSource;
+import techguns.entities.ai.EntityAIAttackTGMelee;
 import techguns.entities.ai.EntityAIHurtByTargetTGFactions;
 import techguns.entities.ai.EntityAIRangedAttack;
 import techguns.items.guns.GenericGun;
@@ -55,7 +56,7 @@ public class GenericNPC extends EntityMob implements IRangedAttackMob, INPCTechg
 	    
 	    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.<Boolean>createKey(GenericNPC.class, DataSerializers.BOOLEAN);
 	    private EntityAIRangedAttack aiRangedAttack =  null;
-	    private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false);
+	    private final EntityAIAttackTGMelee aiAttackOnCollide = new EntityAIAttackTGMelee(this, 1.2D, false);
 	  
 	    boolean tryLink=true;
 	    

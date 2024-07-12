@@ -125,7 +125,7 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(72.0D);
        	this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0);
        	this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(0);
     }

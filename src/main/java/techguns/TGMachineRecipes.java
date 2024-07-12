@@ -199,8 +199,8 @@ public class TGMachineRecipes {
 		FabricatorRecipe.addRecipe(new ItemStackOreDict("ingotGold"), 1, FabricatorRecipe.copperWires, 1, FabricatorRecipe.redstone, 3, FabricatorRecipe.plastic, 1, TGItems.ENERGY_CELL_EMPTY, 1);
 		FabricatorRecipe.addRecipe(new ItemStackOreDict(new ItemStack(Blocks.SOUL_SAND,1)), 1, FabricatorRecipe.goldWires, 1, FabricatorRecipe.redstone, 1, FabricatorRecipe.plastic, 1, TGItems.CYBERNETIC_PARTS, 1);
 		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.COIL, 1)), 1, FabricatorRecipe.circuit_elite, 2, FabricatorRecipe.mechanicalPartsT3, 1, FabricatorRecipe.titaniumPlate, 1, TGItems.SONIC_EMITTER, 1);		
-		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.ENRICHED_URANIUM, 1)), 1, FabricatorRecipe.circuit_elite, 2, FabricatorRecipe.mechanicalPartsT3, 2, FabricatorRecipe.leadPlate, 2, TGItems.RAD_EMITTER, 1);		
-		
+		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.ENRICHED_URANIUM, 1)), 1, FabricatorRecipe.circuit_elite, 2, FabricatorRecipe.mechanicalPartsT3, 2, FabricatorRecipe.leadPlate, 2, TGItems.RAD_EMITTER, 1);
+		FabricatorRecipe.addRecipe(new ItemStackOreDict("ingotSteel", 2), 1, FabricatorRecipe.circuit_basic, 1, FabricatorRecipe.redstone, 4, FabricatorRecipe.leadPlate, 2, TGItems.NUCLEAR_POWERCELL_EMPTY, 1);
 		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.POWER_ARMOR_PLATING, 2)), 1, FabricatorRecipe.circuit_elite, 4, FabricatorRecipe.mechanicalPartsT3, 2, FabricatorRecipe.ingotHellish, 8, TGItems.MK2_POWER_PLATE, 2);
 		FabricatorRecipe.addRecipe(new ItemStackOreDict(TGItems.newStack(TGItems.INGOT_HELLISH, 4)), 1, FabricatorRecipe.carbonFibers, 4, FabricatorRecipe.mechanicalPartsT3, 2, FabricatorRecipe.titaniumPlate, 2, TGItems.DOOM_PLATE, 2);
 

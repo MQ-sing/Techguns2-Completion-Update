@@ -42,13 +42,13 @@ public class TGRadiationSystem implements ITGInitializer {
 	public static RadResistancePotion radresistance_effect;
 	public static RadRegenerationPotion radregen_effect;
 	
-	public static int MINOR_POISONING=500;
-	public static int SEVERE_POISONING=750;
+	public static int MINOR_POISONING=100;
+	public static int SEVERE_POISONING=500;
 	public static int LETHAL_POISONING=1000;
 	
-	public static int RADLOST_ON_DEATH=200;
+	public static int RADLOST_ON_DEATH=50;
 	
-	public static final int INVENTORY_RADIATION_INVERVALL=60;
+	public static final int INVENTORY_RADIATION_INVERVALL=30;
 	
 	public static PotionType RAD_POTION;
 	public static PotionType RAD_RESISTANCE_POTION;

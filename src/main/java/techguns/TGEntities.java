@@ -165,6 +165,7 @@ public class TGEntities implements ITGInitializer {
 		
 		TGSpawnManager.spawnTableNether.registerSpawn(new TGNpcSpawn(ZombiePigmanSoldier.class, TGConfig.spawnWeightZombiePigmanSoldier), 0);
 		TGSpawnManager.spawnTableNether.registerSpawn(new TGNpcSpawn(CyberDemon.class, TGConfig.spawnWeightCyberDemon), 0);
+		TGSpawnManager.spawnTableNether.registerSpawn(new TGNpcSpawn(Ghastling.class, TGConfig.spawnWeightGhastling, true), 0);
 
 		TGSpawnManager.spawnTableEnd.registerSpawn(new TGNpcSpawn(SuperMutantBasic.class, TGConfig.spawnWeightSuperMutantBasic), 0);
 		TGSpawnManager.spawnTableEnd.registerSpawn(new TGNpcSpawn(SuperMutantElite.class, TGConfig.spawnWeightSuperMutantElite), 0);
