@@ -2,10 +2,7 @@ package techguns.entities.npcs;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -43,6 +40,8 @@ import techguns.TGSounds;
 import techguns.Techguns;
 import techguns.api.npc.INPCTechgunsShooter;
 import techguns.api.npc.INpcTGDamageSystem;
+import techguns.api.npc.factions.ITGNpcTeam;
+import techguns.api.npc.factions.TGNpcFaction;
 import techguns.capabilities.TGSpawnerNPCData;
 import techguns.client.audio.TGSoundCategory;
 import techguns.damagesystem.TGDamageSource;
@@ -51,7 +50,7 @@ import techguns.entities.projectiles.GenericProjectile;
 import techguns.entities.projectiles.RocketProjectile;
 import techguns.packets.PacketPlaySound;
 
-public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, INPCTechgunsShooter, ITGSpawnerNPC {
+public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, INPCTechgunsShooter, ITGSpawnerNPC, ITGNpcTeam {
 
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.<Boolean>createKey(Ghastling.class, DataSerializers.BOOLEAN);
 
@@ -76,6 +75,12 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
     { 
         return LOOT;
         //return LootTableList.ENTITIES_GHAST;
+    }
+
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute()
+    {
+        return EnumCreatureAttribute.UNDEAD;
     }
     
 
@@ -156,7 +161,7 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
      */
     protected float getSoundVolume()
     {
-        return 10.0F;
+        return 5.0F;
     }
     
     public float getEyeHeight()
@@ -181,13 +186,48 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
 
 	@Override
 	public float getTotalArmorAgainstType(TGDamageSource dmgsrc) {
-		return 0;
+        switch(dmgsrc.damageType){
+            case EXPLOSION:
+                return 30.0f;
+            case LIGHTNING:
+            case ENERGY:
+            case FIRE:
+                return 10.0f;
+            case ICE:
+            case PHYSICAL:
+            case PROJECTILE:
+            case POISON:
+            case RADIATION:
+            case UNRESISTABLE:
+            default:
+                return 0.0f;
+        }
 	}
 
 	@Override
 	public float getPenetrationResistance(TGDamageSource dmgsrc) {
-		return 0;
+        switch(dmgsrc.damageType){
+            case PROJECTILE:
+                return 0.1f;
+            case EXPLOSION:
+                return 0.9f;
+            case LIGHTNING:
+            case ENERGY:
+            case FIRE:
+            case ICE:
+            case PHYSICAL:
+            case POISON:
+            case RADIATION:
+            case UNRESISTABLE:
+            default:
+                return 0.0f;
+        }
 	}
+
+    @Override
+    public TGNpcFaction getTGFaction() {
+        return TGNpcFaction.HOSTILE;
+    }
 
 	protected static class AIGhastlingAttack extends EntityAIBase
     {
@@ -251,7 +291,7 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
                 	
 
                    TGPackets.network.sendToAllAround(new PacketPlaySound(TGSounds.NETHERBLASTER_FIRE, this.parentEntity, 1.0f, 1.0f, false, false, TGSoundCategory.GUN_FIRE), TGPackets.targetPointAroundEnt(parentEntity, 100.0f));
-                   RocketProjectile rocket = new RocketProjectile(this.parentEntity.world, this.parentEntity,12.0f, 1.0f, 100, 0.05f, 30, 40, 8.0f, 0.25f,false,this.parentEntity.rand.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT, 4.0f, 0.0f);
+                   RocketProjectile rocket = new RocketProjectile(this.parentEntity.world, this.parentEntity,12.0f, 1.15f, 100, 0.05f, 30, 40, 8.0f, 0.25f,false,this.parentEntity.rand.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT, 2.0f, 0.0f);
             	    
             	    world.spawnEntity(rocket);
                 	
@@ -365,7 +405,7 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
                              this.parentEntity.world.spawnEntity(entitysmallfireball);
                          }*/
                         // TGPackets.network.sendToAllAround(new PacketPlaySound(TGSounds.NETHERBLASTER_FIRE, this.parentEntity, 1.0f, 1.0f, false, false, TGSoundCategory.GUN_FIRE), TGPackets.targetPointAroundEnt(parentEntity, 100.0f));
-                 	    RocketProjectile rocket = new RocketProjectile(this.parentEntity.world, this.parentEntity,12.0f, 1.0f, 100, 0.05f, 30, 40, 8.0f, 0.25f,false,this.parentEntity.rand.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT, 4.0f, 0.0f);
+                 	    RocketProjectile rocket = new RocketProjectile(this.parentEntity.world, this.parentEntity,15.0f, 1.0f, 100, 0.05f, 30, 40, 8.0f, 0.25f,false,this.parentEntity.rand.nextBoolean()?EnumBulletFirePos.LEFT:EnumBulletFirePos.RIGHT, 1.0f, 0.0f);
                  	    
                  	    this.parentEntity.world.spawnEntity(rocket);
                          

@@ -214,7 +214,7 @@ public class TGConfig {
 		
 		spawnWeightCyberDemon = config.getInt("SpawnWeightCyberDemon", "NPC Spawn", 30, 0, 10000, "Spawn weight for spawning Cyber Demons (Nether only), at 0 spawn will not be registered");
 
-		spawnWeightGhastling = config.getInt("SpawnWeightGhastling", "NPC Spawn", 20, 0, 10000, "Spawn weight for spawning Ghastlings (Nether only), at 0 spawn will not be registered");
+		spawnWeightGhastling = config.getInt("SpawnWeightGhastling", "NPC Spawn", 30, 0, 10000, "Spawn weight for spawning Ghastlings (Nether only), at 0 spawn will not be registered");
 
 		spawnWeightSuperMutantBasic = config.getInt("SpawnWeightSuperMutantBasic", "NPC Spawn", 100, 0, 10000, "Spawn weight for spawning Basic Super Mutants (End only), at 0 spawn will not be registered");
 

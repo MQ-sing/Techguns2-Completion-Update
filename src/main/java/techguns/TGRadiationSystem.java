@@ -116,9 +116,7 @@ public class TGRadiationSystem implements ITGInitializer {
 	}	
 	
 	public static void applyRadToEntities(World world, double posX, double posY, double posZ, double radius, int duration, int strength, double inner_radius, int strength_outer) {
-		Vec3d offset= new Vec3d(posX+radius, posY+radius, posZ+radius);
-		Vec3d offset2= new Vec3d(posX-radius, posY-radius, posZ-radius);
-		AxisAlignedBB bb = new AxisAlignedBB(offset, offset2);
+		AxisAlignedBB bb = new AxisAlignedBB(radius, posY+radius, posZ+radius, posX-radius, posY-radius, posZ-radius);
 		
 		Vec3d pos = new Vec3d(posX, posY, posZ);
 		world.getEntitiesWithinAABB(EntityLivingBase.class ,bb, RADIATION_TARGETS).forEach(e -> {
