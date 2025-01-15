@@ -1,6 +1,6 @@
 package techguns.client;
 
-import java.lang.reflect.Constructor;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.feed_the_beast.ftblib.lib.client.ModelBase;
 
 import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
 import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
@@ -17,8 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelCow;
-import net.minecraft.client.model.ModelQuadruped;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -71,11 +68,8 @@ import techguns.TGSounds;
 import techguns.TGuns;
 import techguns.Techguns;
 import techguns.api.npc.INPCTechgunsShooter;
-import techguns.api.render.IItemRenderer;
-import techguns.api.render.IItemTGRenderer;
 import techguns.capabilities.TGDeathTypeCap;
 import techguns.capabilities.TGDeathTypeCapStorage;
-import techguns.capabilities.TGExtendedPlayer;
 import techguns.capabilities.TGExtendedPlayerClient;
 import techguns.capabilities.TGShooterValues;
 import techguns.client.audio.TGSound;
@@ -90,7 +84,6 @@ import techguns.client.models.armor.ModelFaceMask;
 import techguns.client.models.armor.ModelGasMask;
 import techguns.client.models.armor.ModelGlider;
 import techguns.client.models.armor.ModelGloves;
-import techguns.client.models.armor.ModelHeavyShield;
 import techguns.client.models.armor.ModelJetPack;
 import techguns.client.models.armor.ModelNightVisionGoggles;
 import techguns.client.models.armor.ModelOxygenTanks;
@@ -154,7 +147,6 @@ import techguns.client.particle.LightPulse;
 import techguns.client.particle.TGFX;
 import techguns.client.particle.TGParticleManager;
 import techguns.client.particle.TGParticleSystem;
-import techguns.client.particle.DeathEffect.GoreData;
 import techguns.client.render.AdditionalSlotRenderRegistry;
 import techguns.client.render.ItemRenderHack;
 import techguns.client.render.RenderAdditionalSlotItem;
@@ -336,20 +328,9 @@ import techguns.util.MathUtil;
 public class ClientProxy extends CommonProxy {
 	
 	public TGParticleManager particleManager = new TGParticleManager();
-	
-	//No longer needed after forge build 2412
-	//protected static Field ItemRender_field_itemStackMainHand = ReflectionHelper.findField(ItemRenderer.class, "itemStackMainHand", "field_187467_d");
-	//protected static Field ItemRender_field_itemStackOffHand = ReflectionHelper.findField(ItemRenderer.class, "itemStackOffHand", "field_187468_e");
-	
+
 	protected GuiHandlerRegister guihandler = new GuiHandlerRegister();
-	
-	public static Field Field_ItemRenderer_equippedProgressMainhand = ObfuscationReflectionHelper.findField(ItemRenderer.class, "field_187469_f"); //ReflectionHelper.findField(ItemRenderer.class, "equippedProgressMainHand", "field_187469_f");
-	public static Field Field_ItemRenderer_equippedProgressOffhand =  ObfuscationReflectionHelper.findField(ItemRenderer.class, "field_187471_h");//ReflectionHelper.findField(ItemRenderer.class, "equippedProgressOffHand", "field_187471_h");
-	public static Field Field_ItemRenderer_prevEquippedProgressMainhand = ObfuscationReflectionHelper.findField(ItemRenderer.class, "field_187470_g");//ReflectionHelper.findField(ItemRenderer.class, "prevEquippedProgressMainHand", "field_187470_g");
-	public static Field Field_ItemRenderer_prevEquippedProgressOffhand = ObfuscationReflectionHelper.findField(ItemRenderer.class, "field_187472_i");//ReflectionHelper.findField(ItemRenderer.class, "prevEquippedProgressOffHand", "field_187472_i");
-	
-	protected static Field RenderPlayer_LayerRenderers = ObfuscationReflectionHelper.findField(RenderLivingBase.class, "field_177097_h");//ReflectionHelper.findField(RenderLivingBase.class, "layerRenderers", "field_177097_h");
-	
+
 	public LinkedList<LightPulse> activeLightPulses;
 	
 	private boolean lightPulsesEnabled=true;
@@ -536,7 +517,8 @@ public class ClientProxy extends CommonProxy {
 
 	private void insertLayerAfterArmor(RenderPlayer r, TGLayerRendererer tglayer) {
 		try {
-			List<LayerRenderer> layers = (List<LayerRenderer>) RenderPlayer_LayerRenderers.get(r);
+			//???
+			List<LayerRenderer> layers = ((RenderLivingBase)(r)).layerRenderers;
 
 			for(int i=0;i<layers.size();i++) {
 				LayerRenderer layer = layers.get(i);
@@ -547,8 +529,6 @@ public class ClientProxy extends CommonProxy {
 			}
 			
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
@@ -1326,11 +1306,13 @@ public class ClientProxy extends CommonProxy {
 	/**
 	 * EntityDeathType
 	 */
+	@Deprecated
 	public void setEntityDeathType(EntityLivingBase entity, DeathType deathtype){
 		TGDeathTypeCap cap = TGDeathTypeCap.get(entity);
 		cap.setDeathType(deathtype);
 	}
-	
+
+	@Deprecated
 	public DeathType getEntityDeathType(EntityLivingBase entity) {
 		return TGDeathTypeCap.get(entity).getDeathType();
 	}

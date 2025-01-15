@@ -55,41 +55,6 @@ public class DamageSystem {
 		
 		return TGConfig.damageFactorNPC;
 	}
-	
-	
-	protected static Field ENT_rand = ReflectionHelper.findField(Entity.class, "rand", "field_70146_Z");
-	
-	protected static Field ELB_idleTime = ReflectionHelper.findField(EntityLivingBase.class, "idleTime", "field_70708_bq");
-	
-	protected static Field ELB_lastDamage = ReflectionHelper.findField(EntityLivingBase.class, "lastDamage", "field_110153_bc");
-	
-	protected static Field ELB_recentlyHit = ReflectionHelper.findField(EntityLivingBase.class, "recentlyHit", "field_70718_bc");
-	protected static Field ELB_attackingPlayer = ReflectionHelper.findField(EntityLivingBase.class, "attackingPlayer", "field_70717_bb");
-	
-	protected static Field ELB_lastDamageSource = ReflectionHelper.findField(EntityLivingBase.class, "lastDamageSource", "field_189750_bF");
-	protected static Field ELB_lastDamageStamp = ReflectionHelper.findField(EntityLivingBase.class, "lastDamageStamp", "field_189751_bG");
-	
-	protected static Method ELB_canBlockDamageSource = ReflectionHelper.findMethod(EntityLivingBase.class, "canBlockDamageSource", "func_184583_d", DamageSource.class);
-	
-	protected static Method ELB_damageShield = ReflectionHelper.findMethod(EntityLivingBase.class, "damageShield", "func_184590_k", float.class);
-	
-	protected static Method ELB_blockUsingShield = ReflectionHelper.findMethod(EntityLivingBase.class, "blockUsingShield", "func_190629_c", EntityLivingBase.class);
-	
-	protected static Method ELB_damageEntity = ReflectionHelper.findMethod(EntityLivingBase.class, "damageEntity", "func_70665_d", DamageSource.class, float.class);
-	
-	protected static Method ELB_setBeenAttacked = ReflectionHelper.findMethod(EntityLivingBase.class, "markVelocityChanged", "func_70018_K");
-	
-	protected static Method ELB_checkTotemDeathProtection = ReflectionHelper.findMethod(EntityLivingBase.class, "checkTotemDeathProtection", "func_190628_d", DamageSource.class);
-	
-	protected static Method ELB_getDeathSound = ReflectionHelper.findMethod(EntityLivingBase.class, "getDeathSound", "func_184615_bR");
-	protected static Method ELB_getSoundVolume = ReflectionHelper.findMethod(EntityLivingBase.class, "getSoundVolume", "func_70599_aP");
-	protected static Method ELB_getSoundPitch = ReflectionHelper.findMethod(EntityLivingBase.class, "getSoundPitch", "func_70647_i");
-	
-	protected static Method ELB_playHurtSound = ReflectionHelper.findMethod(EntityLivingBase.class, "playHurtSound", "func_184581_c", DamageSource.class);
-	
-	protected static Method ELB_applyPotionDamageCalculations = ReflectionHelper.findMethod(EntityLivingBase.class, "applyPotionDamageCalculations", "func_70672_c", DamageSource.class, float.class);
-	protected static Method ELB_damageArmor = ReflectionHelper.findMethod(EntityLivingBase.class, "damageArmor", "func_70675_k", float.class);
-	
 	public static float getTotalArmorAgainstType(EntityPlayer ply, DamageType type){
 		float value=0.0f;
 		
@@ -152,7 +117,7 @@ public class DamageSystem {
      * @throws IllegalArgumentException 
      * @throws InvocationTargetException 
      */
-    public static boolean attackEntityFrom(EntityLivingBase ent, DamageSource source, float amount) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
+    public static boolean attackEntityFrom(EntityLivingBase ent, DamageSource source, float amount)
     {
         //if (!net.minecraftforge.common.ForgeHooks.onLivingAttack(this, source, amount)) return false;
     	
@@ -168,8 +133,7 @@ public class DamageSystem {
         }
         else
         {
-            //ent.idleTime = 0;
-            ELB_idleTime.setInt(ent, 0);
+            ent.idleTime = 0;
 
             if (ent.getHealth() <= 0.0F)
             {
@@ -185,7 +149,7 @@ public class DamageSystem {
 
                 if ((source == DamageSource.ANVIL || source == DamageSource.FALLING_BLOCK) && !ent.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty())
                 {
-                    ent.getItemStackFromSlot(EntityEquipmentSlot.HEAD).damageItem((int)(amount * 4.0F + ((java.util.Random)ENT_rand.get(ent)).nextFloat() * amount * 2.0F), ent);
+                    ent.getItemStackFromSlot(EntityEquipmentSlot.HEAD).damageItem((int)(amount * 4.0F + (ent.rand).nextFloat() * amount * 2.0F), ent);
                     amount *= 0.75F;
                 }
 
@@ -193,11 +157,10 @@ public class DamageSystem {
 
                 //ELB_canBlockDamageSource.invoke(ent, source);
                 
-                if (amount > 0.0F && ((Boolean)ELB_canBlockDamageSource.invoke(ent, source)))
+                if (amount > 0.0F && ent.canBlockDamageSource(source))
                 {
-                    //ent.damageShield(amount);
-                	ELB_damageShield.invoke(ent, amount);
-                	
+                    ent.damageShield(amount);
+
                     //amount = 0.0F;
                 	/**SHIELD DAMAGE HOOK**/
                 	amount = calculateShieldDamage(ent, amount, dmgsrc);
@@ -211,8 +174,7 @@ public class DamageSystem {
 
                         if (entity instanceof EntityLivingBase)
                         {
-                            //ent.blockUsingShield((EntityLivingBase)entity);
-                            ELB_blockUsingShield.invoke(ent, (EntityLivingBase)entity);
+                            ent.blockUsingShield((EntityLivingBase)entity);
                         }
                     }
 
@@ -224,26 +186,22 @@ public class DamageSystem {
 
                 if (!dmgsrc.ignoreHurtresistTime && ((float)ent.hurtResistantTime > (float)ent.maxHurtResistantTime / 2.0F))
                 {
-                    if (amount <= ELB_lastDamage.getFloat(ent))//ent.lastDamage)
+                    if (amount <= ent.lastDamage)
                     {
                         return false;
                     }
 
-                    //ent.damageEntity(source, amount - ELB_lastDamage.getFloat(ent));//ent.lastDamage);
-                    ELB_damageEntity.invoke(ent, source, amount - ELB_lastDamage.getFloat(ent));
-                    //ent.lastDamage = amount;
-                    ELB_lastDamage.setFloat(ent, amount);
+                    ent.damageEntity(source, amount -ent.lastDamage);
+                    ent.lastDamage = amount;
                     flag1 = false;
                 }
                 else
                 {
-                    //ent.lastDamage = amount;
                 	if (!dmgsrc.ignoreHurtresistTime) {
-	                    ELB_lastDamage.setFloat(ent, amount);
+	                    ent.lastDamage=amount;
 	                    ent.hurtResistantTime = ent.maxHurtResistantTime;
                 	}
-                    //ent.damageEntity(source, amount);
-                    ELB_damageEntity.invoke(ent, source, amount);
+                    ent.damageEntity(source, amount);
                     if(!dmgsrc.ignoreHurtresistTime) {
 	                    ent.maxHurtTime = 10;
 	                    ent.hurtTime = ent.maxHurtTime;
@@ -262,10 +220,8 @@ public class DamageSystem {
 
                     if (entity1 instanceof EntityPlayer)
                     {
-                        //ent.recentlyHit = 100;
-                        ELB_recentlyHit.setInt(ent, 100);
-                        //ent.attackingPlayer = (EntityPlayer)entity1;
-                        ELB_attackingPlayer.set(ent, (EntityPlayer)entity1);
+                        ent.recentlyHit = 100;
+                        ent.attackingPlayer = (EntityPlayer)entity1;
                     }
                     else if (entity1 instanceof net.minecraft.entity.passive.EntityTameable)
                     {
@@ -273,10 +229,8 @@ public class DamageSystem {
 
                         if (entitywolf.isTamed())
                         {
-                            //ent.recentlyHit = 100;
-                            ELB_recentlyHit.setInt(ent, 100);
-                            //ent.attackingPlayer = null;
-                            ELB_attackingPlayer.set(ent, null);
+                            ent.recentlyHit = 100;
+                            ent.attackingPlayer = null;
                         }
                     }
                 }
@@ -313,8 +267,7 @@ public class DamageSystem {
 
                     if (source != DamageSource.DROWN && (!flag || amount > 0.0F))
                     {
-                        //ent.setBeenAttacked();
-                    	ELB_setBeenAttacked.invoke(ent);
+                        ent.markVelocityChanged();
                     }
 
                     if (entity1 != null)
@@ -341,14 +294,13 @@ public class DamageSystem {
 
                 if (ent.getHealth() <= 0.0F)
                 {
-                    //if (!ent.checkTotemDeathProtection(source))
-                	if (!((Boolean)ELB_checkTotemDeathProtection.invoke(ent, source)))
+                    if (!ent.checkTotemDeathProtection(source))
                     {
-                        SoundEvent soundevent = (SoundEvent)ELB_getDeathSound.invoke(ent);//ent.getDeathSound();
+                        SoundEvent soundevent = ent.getDeathSound();
 
                         if (flag1 && soundevent != null)
                         {
-                            ent.playSound(soundevent, (float)ELB_getSoundVolume.invoke(ent), (float)ELB_getSoundPitch.invoke(ent));//ent.getSoundVolume(), ent.getSoundPitch());
+                            ent.playSound(soundevent, ent.getSoundVolume(), ent.getSoundPitch());
                         }
 
                         ent.onDeath(source);
@@ -356,18 +308,15 @@ public class DamageSystem {
                 }
                 else if (flag1)
                 {
-                    //ent.playHurtSound(source);
-                    ELB_playHurtSound.invoke(ent, source);
+                    ent.playHurtSound(source);
                 }
 
                 boolean flag2 = !flag || amount > 0.0F;
 
                 if (flag2)
                 {
-                    //ent.lastDamageSource = source;
-                    ELB_lastDamageSource.set(ent, source);
-                    //ent.lastDamageStamp = ent.world.getTotalWorldTime();
-                    ELB_lastDamageStamp.setLong(ent, ent.world.getTotalWorldTime());
+                    ent.lastDamageSource = source;
+                    ent.lastDamageStamp = ent.world.getTotalWorldTime();
                 }
 
                 if (ent instanceof EntityPlayerMP)
@@ -410,10 +359,9 @@ public class DamageSystem {
 		return amount;
 	}
     
-    public static void livingHurt(EntityLivingBase elb, DamageSource damageSrc, float damageAmount) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void livingHurt(EntityLivingBase elb, DamageSource damageSrc, float damageAmount) {
     	damageAmount = ELB_applyArmorCalculations(elb,damageSrc, damageAmount);
-        //damageAmount = elb.applyPotionDamageCalculations(damageSrc, damageAmount);
-        damageAmount = (Float)ELB_applyPotionDamageCalculations.invoke(elb, damageSrc, damageAmount);
+        damageAmount = elb.applyPotionDamageCalculations(damageSrc, damageAmount);
         float f = damageAmount;
         damageAmount = Math.max(damageAmount - elb.getAbsorptionAmount(), 0.0F);
         elb.setAbsorptionAmount(elb.getAbsorptionAmount() - (f - damageAmount));
@@ -431,12 +379,11 @@ public class DamageSystem {
     /**
      * Reduces damage, depending on armor
      */
-    public static float ELB_applyArmorCalculations(EntityLivingBase elb, DamageSource source, float damage) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
+    public static float ELB_applyArmorCalculations(EntityLivingBase elb, DamageSource source, float damage)
     {
         if (!source.isUnblockable())
         {
-            ELB_damageArmor.invoke(elb, damage);
-             
+            elb.damageArmor(damage);
             TGDamageSource dmgsrc = TGDamageSource.getFromGenericDamageSource(source);
             INpcTGDamageSystem tg = (INpcTGDamageSystem) elb;
             

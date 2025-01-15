@@ -93,7 +93,7 @@ public class AlienBug extends EntitySpider implements ITGNpcTeam, INpcTGDamageSy
 	}
 
 	@Override
-	protected SoundEvent getDeathSound() {
+	public SoundEvent getDeathSound() {
 		return TGSounds.ALIENBUG_DEATH;
 	}
 

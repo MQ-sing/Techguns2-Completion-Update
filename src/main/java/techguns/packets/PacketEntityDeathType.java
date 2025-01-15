@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import techguns.TGConfig;
 import techguns.TGPackets;
+import techguns.capabilities.TGDeathTypeCap;
 import techguns.client.ClientProxy;
 import techguns.client.particle.DeathEffect;
 import techguns.deatheffects.EntityDeathUtils.DeathType;
@@ -87,8 +88,8 @@ public class PacketEntityDeathType implements IMessage{
 						entity.motionY = message.motionY;
 						entity.motionZ = message.motionZ;
 						//System.out.printf("(message)EntityMotion: (%.1f/%.1f/%.1f)\n",message.motionX,message.motionY,message.motionZ);
-						
-						ClientProxy.get().setEntityDeathType(entity, deathtype);
+						TGDeathTypeCap cap=TGDeathTypeCap.get(entity);
+						if(cap!=null)cap.setDeathType(deathtype);
 						DeathEffect.createDeathEffect(entity, deathtype, message.motionX, message.motionY, message.motionZ);
 					}
 				}

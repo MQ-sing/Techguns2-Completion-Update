@@ -151,7 +151,7 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
         return SoundEvents.ENTITY_GHAST_HURT;
     }
 
-    protected SoundEvent getDeathSound()
+    public SoundEvent getDeathSound()
     {
         return SoundEvents.ENTITY_GHAST_DEATH;
     }
@@ -159,7 +159,7 @@ public class Ghastling extends EntityMob implements IMob, INpcTGDamageSystem, IN
     /**
      * Returns the volume for the sounds this mob makes.
      */
-    protected float getSoundVolume()
+    public float getSoundVolume()
     {
         return 5.0F;
     }

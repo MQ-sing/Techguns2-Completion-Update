@@ -3,6 +3,7 @@ package techguns.client.particle;
 
 import java.util.HashMap;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
@@ -100,7 +101,7 @@ import techguns.entities.projectiles.FlyingGibs;
 
 public class DeathEffect {
 	
-	public static HashMap<Class<? extends EntityLivingBase>, GoreData> goreStats = new HashMap<Class<? extends EntityLivingBase>, GoreData>();
+	public static Object2ObjectOpenHashMap<Class<? extends EntityLivingBase>, GoreData> goreStats = new Object2ObjectOpenHashMap<>();
 	
 	private static GoreData genericGore;
 	static {
@@ -220,7 +221,7 @@ public class DeathEffect {
 
 			try {
 				if (data.model == null && render!=null) {
-					ModelBase mainModel = (ModelBase) DeathEffectEntityRenderer.RLB_mainModel.get((RenderLivingBase) render);
+					ModelBase mainModel =((RenderLivingBase<?>)render).mainModel;
 					if (mainModel instanceof ModelBiped) {
 						data.model = new ModelGibsBiped(((ModelBiped)mainModel).getClass().newInstance());
 					}else if (mainModel instanceof ModelQuadruped) {
@@ -365,8 +366,8 @@ public class DeathEffect {
 
 		/**
 		 * Add a random scale to individual gibs.
-		 * @param f
-		 * @param g
+		 * @param min
+		 * @param max
 		 */
 		public void setRandomScale(float min, float max) {
 			minPartScale = min;

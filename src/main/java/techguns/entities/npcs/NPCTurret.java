@@ -227,7 +227,7 @@ public class NPCTurret extends EntityCreature implements IAnimals, IRangedAttack
 				networkUpdateRequestDelay--;
 			}
 			
-			//4096 = 64² -> squared Distance
+			//4096 = 64 -> squared Distance
 			if (this.mountedTileEnt == null && networkUpdateRequestDelay <=0 &&  Techguns.proxy.clientInRangeSquared(this.posX, this.posZ, 4096)){
 				TGPackets.network.sendToServer(new PacketRequestTurretSync(this));
 				this.networkUpdateRequestDelay = 600; //don't spam server with packets

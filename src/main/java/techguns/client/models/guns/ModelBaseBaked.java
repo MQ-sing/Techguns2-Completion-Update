@@ -26,9 +26,6 @@ import techguns.client.models.ModelMultipart;
 
 public class ModelBaseBaked extends ModelMultipart {
 
-	protected static Method RenderItem_renderModel = ReflectionHelper.findMethod(RenderItem.class, "renderModel", "func_191961_a", IBakedModel.class, ItemStack.class);
-	
-	
 	ArrayList<IBakedModel> bakedModels = new ArrayList<IBakedModel>();
 	
 	public ModelBaseBaked(IBakedModel... bakedModels) {
@@ -68,12 +65,8 @@ public class ModelBaseBaked extends ModelMultipart {
 			float reloadProgress, TransformType transformType, int part, float fireProgress, float chargeProgress) {
 		
 		try {
-			RenderItem_renderModel.invoke(Minecraft.getMinecraft().getRenderItem(), bakedModels.get(0), ItemStack.EMPTY);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			Minecraft.getMinecraft().getRenderItem().renderModel(bakedModels.get(0), ItemStack.EMPTY);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
 	}

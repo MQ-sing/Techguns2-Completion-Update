@@ -1,17 +1,14 @@
 package techguns.events;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 import elucent.albedo.event.GatherLightsEvent;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped.ArmPose;
@@ -28,9 +25,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -51,17 +46,14 @@ import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.event.sound.SoundEvent.SoundSourceEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -75,7 +67,6 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import techguns.TGBlocks;
@@ -90,11 +81,10 @@ import techguns.api.npc.INpcTGDamageSystem;
 import techguns.api.radiation.TGRadiation;
 import techguns.api.tginventory.ITGSpecialSlot;
 import techguns.api.tginventory.TGSlotType;
+import techguns.capabilities.TGDeathTypeCap;
 import techguns.capabilities.TGExtendedPlayer;
 import techguns.client.ClientProxy;
 import techguns.client.ShooterValues;
-import techguns.client.audio.TGSound;
-import techguns.client.render.GLStateSnapshot;
 import techguns.client.render.entities.npcs.RenderAttackHelicopter;
 import techguns.client.render.entities.projectiles.DeathEffectEntityRenderer;
 import techguns.client.render.entities.projectiles.RenderGrenade40mmProjectile;
@@ -320,8 +310,9 @@ public class TGEventHandler {
 		/*
 		 * ENTITY DEATH EFFECTS
 		 */
-		ClientProxy cp = ClientProxy.get();
-		DeathType dt = cp.getEntityDeathType(event.getEntity());
+		TGDeathTypeCap cap=TGDeathTypeCap.get(event.getEntity());
+		if(cap==null)return;
+		DeathType dt = cap.getDeathType();
 		switch (dt) {
 		case GORE:
 			event.setCanceled(true);
@@ -344,16 +335,7 @@ public class TGEventHandler {
 	public static void OnLivingAttack(LivingAttackEvent event){
 		if (event.getSource() instanceof TGDamageSource) {
 			event.setCanceled(true);
-			try {
-				DamageSystem.attackEntityFrom(event.getEntityLiving(), event.getSource(), event.getAmount());
-				
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			DamageSystem.attackEntityFrom(event.getEntityLiving(), event.getSource(), event.getAmount());
 		} else if ( (event.getSource() == DamageSource.LAVA || event.getSource()==DamageSource.ON_FIRE || event.getSource()==DamageSource.IN_FIRE) && event.getEntityLiving() instanceof EntityPlayer) {
 			float bonus = GenericArmor.getArmorBonusForPlayer((EntityPlayer) event.getEntityLiving(), TGArmorBonus.COOLING_SYSTEM,event.getEntityLiving().world.getTotalWorldTime()%5==0);
 			
@@ -367,15 +349,7 @@ public class TGEventHandler {
 	public static void onLivingHurt(LivingHurtEvent event) {
 		if(event.getEntity() instanceof INpcTGDamageSystem) {
 			event.setCanceled(true);
-			try {
-				DamageSystem.livingHurt(event.getEntityLiving(), event.getSource(), event.getAmount());
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			DamageSystem.livingHurt(event.getEntityLiving(), event.getSource(), event.getAmount());
 		}
 	}
 
@@ -575,24 +549,15 @@ public class TGEventHandler {
 			EnumHand hand = ply.getActiveHand();
 
 			ItemRenderer itemrenderer = Minecraft.getMinecraft().getItemRenderer();
-			try {
-				ClientProxy cp = ClientProxy.get();
 				if(hand==EnumHand.MAIN_HAND) {
-					if(cp.Field_ItemRenderer_equippedProgressMainhand.getFloat(itemrenderer)<t) {
-						cp.Field_ItemRenderer_equippedProgressMainhand.setFloat(itemrenderer, t);
-						cp.Field_ItemRenderer_prevEquippedProgressMainhand.setFloat(itemrenderer, t);
+					if(itemrenderer.equippedProgressMainHand<t) {
+						itemrenderer.equippedProgressMainHand=itemrenderer.prevEquippedProgressMainHand=t;
 					}
 				} else {
-					if(cp.Field_ItemRenderer_equippedProgressOffhand.getFloat(itemrenderer)<t) {
-						cp.Field_ItemRenderer_equippedProgressOffhand.setFloat(itemrenderer, t);
-						cp.Field_ItemRenderer_prevEquippedProgressOffhand.setFloat(itemrenderer, t);
-					}
+					if(itemrenderer.equippedProgressOffHand<t) {
+					itemrenderer.equippedProgressOffHand=itemrenderer.prevEquippedProgressOffHand=t;
 				}
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+				}
 			
 		} /*else {
 			
@@ -703,8 +668,6 @@ public class TGEventHandler {
 		}	
 		
 	}
-	
-	public static Method Block_getSilkTouchDrop = ReflectionHelper.findMethod(Block.class, "getSilkTouchDrop", "func_180643_i", IBlockState.class);
 
 	@SubscribeEvent
 	public static void onBlockDrops(HarvestDropsEvent event) {
@@ -717,20 +680,9 @@ public class TGEventHandler {
 				
 					MiningDrill md = (MiningDrill) stack.getItem();
 					if (md.getAmmoLeft(stack)>0) {
-						
-						List drops = event.getDrops();
+						List<ItemStack> drops = event.getDrops();
 						drops.clear();
-						
-						try {
-							drops.add(Block_getSilkTouchDrop.invoke(state.getBlock(), state));
-						} catch (IllegalAccessException e) {
-							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-						} catch (InvocationTargetException e) {
-							e.printStackTrace();
-						}
-						
+						drops.add(state.getBlock().getSilkTouchDrop(state));
 						event.setDropChance(1.0f);
 					}
 				}

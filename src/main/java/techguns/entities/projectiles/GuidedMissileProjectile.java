@@ -19,7 +19,7 @@ import techguns.util.MathUtil;
 
 public class GuidedMissileProjectile extends RocketProjectile{
 
-	public static final double MAX_TURN_ANGLE = 9.0 *MathUtil.D2R; //= 180° per second
+	public static final double MAX_TURN_ANGLE = 9.0 *MathUtil.D2R; //= 180Â° per second
 	
 	public Entity target;
 	

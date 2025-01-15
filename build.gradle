@@ -2,16 +2,20 @@ buildscript {
     repositories {
 		maven { url = "https://maven.minecraftforge.net/" }
 		maven { url = "https://files.minecraftforge.net/maven" }
+		maven {
+			name 'CleanroomMC Maven'
+			url 'https://maven.cleanroommc.com'
+		}
 		mavenCentral()
     }
     dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+		classpath 'net.minecraftforge.gradle:ForgeGradle:6.+'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
-
 
 version = "1.12.2-2.0.2.3"
 group = "techguns" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -51,6 +55,7 @@ minecraft {
 			property 'forge.logging.console.level', 'debug'
 		}
 	}
+	accessTransformer=file("src/main/resources/META-INF/techguns_at.cfg")
 }
 
 repositories {
@@ -60,7 +65,7 @@ repositories {
 	maven {
 		// location of the maven that hosts JEI files
 		name = "Progwml6 maven"
-		url = "http://dvs1.progwml6.com/files/maven"
+		url = "https://dvs1.progwml6.com/files/maven"
 	}
 	maven {
 		// location of a maven mirror for JEI files, as a fallback
@@ -78,9 +83,10 @@ repositories {
 	}
 	maven {
 		name = "OpenComputers"
-		url = "http://maven.cil.li/"
+		url = "https://maven.cil.li/"
 	}
 }
+
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
@@ -104,26 +110,28 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-	//compile 'elucent:albedo:2.0-SNAPSHOT'
+	//implementation 'elucent:albedo:2.0-SNAPSHOT'
 	//deobfCompile 'albedo:albedo:0.1.3:deobf'
-	// compile 'albedo:albedo:1.12.2:1.1.0'
-	compile files('libs/albedo-1.12.2-1.1.0.jar')
-	// compile 'crafttweaker:CraftTweaker2:1.12:4.1.13'
-	compile files('libs/CraftTweaker2-1.12-4.1.13.jar')
+	// implementation 'albedo:albedo:1.12.2:1.1.0'
+	implementation files('libs/albedo-1.12.2-1.1.0.jar')
+	// implementation 'crafttweaker:CraftTweaker2:1.12:4.1.13'
+	implementation files('libs/CraftTweaker2-1.12-4.1.13.jar')
 	//provided 'chisel:Chisel-MC1.12:0.0.14.18:api'
 	//provided 'chisel:Chisel:MC1.12:0.0.14.18'
 	
-	// compile 'the-lost-cities:lostcities:1.12:2.0.12'
-	compile files('libs/lostcities-1.12-2.0.12.jar')
-	//compile 'com.latmod.mods:FTBLib:4.2.5:api'
-	compile files('libs/FTBLib-5.4.0.64.jar')
+	// implementation 'the-lost-cities:lostcities:1.12:2.0.12'
+	implementation files('libs/lostcities-1.12-2.0.12.jar')
+	//implementation 'com.latmod.mods:FTBLib:4.2.5:api'
+	implementation files('libs/FTBLib-5.4.0.64.jar')
 	
-	 // compile against the JEI API but do not include it at runtime
+	 // implementation against the JEI API but do not include it at runtime
 	compileOnly fg.deobf("mezz.jei:jei_1.12.2:${jei_version}:api")
 	// at runtime, use the full JEI jar
 	runtimeOnly fg.deobf("mezz.jei:jei_1.12.2:${jei_version}")
 
-	compile files('libs/OpenComputers-MC1.12.2-1.7.5.192.jar')
+	implementation files('libs/OpenComputers-MC1.12.2-1.7.5.192.jar')
+
+
 }
 
 
@@ -132,6 +140,6 @@ jar {
 	manifest {
 		attributes 'FMLCorePlugin': "techguns.core.TechgunsFMLPlugin"
 		attributes 'FMLCorePluginContainsFMLMod': "true"
-	    attributes 'FMLAT': 'techguns_at.cfg'
+		attributes 'FMLAT': 'techguns_at.cfg'
 	}
 }

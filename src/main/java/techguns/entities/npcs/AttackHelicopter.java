@@ -116,7 +116,7 @@ public class AttackHelicopter extends GenericFlyingMob
         return TGSounds.HELICOPTER_HIT;
     }
 
-    protected SoundEvent getDeathSound()
+    public SoundEvent getDeathSound()
     {
         return TGSounds.HELICOPTER_HIT;
     }
@@ -124,7 +124,7 @@ public class AttackHelicopter extends GenericFlyingMob
     /**
      * Returns the volume for the sounds this mob makes.
      */
-    protected float getSoundVolume()
+    public float getSoundVolume()
     {
         return 8.0F;
     }

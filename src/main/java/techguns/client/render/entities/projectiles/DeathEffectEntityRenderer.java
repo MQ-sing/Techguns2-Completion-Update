@@ -1,8 +1,6 @@
 package techguns.client.render.entities.projectiles;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -19,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import techguns.Techguns;
 import techguns.client.render.TGRenderHelper;
 import techguns.client.render.TGRenderHelper.RenderType;
@@ -33,25 +30,14 @@ public class DeathEffectEntityRenderer {
 	private static final ResourceLocation RES_LASER_EFFECT = new ResourceLocation(Techguns.MODID,"textures/fx/laserdeath.png");
 	private static final int MAX_DEATH_TIME = 20;
 
-	public static Field RLB_mainModel = ReflectionHelper.findField(RenderLivingBase.class, "mainModel", "field_77045_g");
-	protected static Method RLB_preRenderCallback = ReflectionHelper.findMethod(RenderLivingBase.class, "preRenderCallback", "func_77041_b", EntityLivingBase.class, float.class);
-	protected static Method R_bindEntityTexture = ReflectionHelper.findMethod(Render.class, "bindEntityTexture", "func_180548_c", Entity.class);
-
-	public static Field R_renderManager = ReflectionHelper.findField(Render.class, "renderManager","field_76990_c");
-	
-	protected static Method R_bindTexture = ReflectionHelper.findMethod(Render.class, "bindTexture","func_110776_a", ResourceLocation.class);
-	protected static Method RLB_getColorMultiplier = ReflectionHelper.findMethod(RenderLivingBase.class, "getColorMultiplier","func_77030_a" ,EntityLivingBase.class, float.class, float.class);
-
-	
-
 	
 	
-	public static void preRenderCallback(RenderLivingBase<? extends EntityLivingBase> renderer, EntityLivingBase elb, float ptt) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		RLB_preRenderCallback.invoke(renderer, elb, ptt);
+	public static void preRenderCallback(RenderLivingBase<EntityLivingBase> renderer, EntityLivingBase elb, float ptt) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		renderer.preRenderCallback(elb,ptt);
 	}
 
-	public static void bindEntityTexture(Render<? extends Entity> renderer, Entity entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		R_bindEntityTexture.invoke(renderer, entity);
+	public static void bindEntityTexture(Render<Entity> renderer, Entity entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		renderer.bindEntityTexture(entity);
 	}
 	
 	
@@ -83,7 +69,7 @@ public class DeathEffectEntityRenderer {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-	public static void doRender(RenderLivingBase renderer, EntityLivingBase entity, double x, double y, double z, float ptt, DeathType deathType)
+	public static void doRender(RenderLivingBase<EntityLivingBase> renderer, EntityLivingBase entity, double x, double y, double z, float ptt, DeathType deathType)
 	{
 		
 		//System.out.println("BIODEATH!2");
@@ -104,12 +90,8 @@ public class DeathEffectEntityRenderer {
 	     //   }
 	        ModelBase mainModel = null;
 //	        ModelBase renderPassModel = null;
-	        try {
-	        	mainModel = (ModelBase)RLB_mainModel.get(renderer);
+			mainModel = renderer.mainModel;
 //	        	renderPassModel = (ModelBase)RLB_renderPassModel.get(renderer);
-	        } catch (Exception e) {
-	        	e.printStackTrace();
-	        }
 	        mainModel.isChild = entity.isChild();
 
 //	        if (renderPassModel != null)
@@ -185,7 +167,7 @@ public class DeathEffectEntityRenderer {
 	            
 	        }catch (Exception exception)
 	        {
-	            //logger.error("Couldn\'t render entity", exception);
+	            //logger.error("Could\'t render entity", exception);
 	        }
 	            
 
@@ -202,7 +184,7 @@ public class DeathEffectEntityRenderer {
 	/**
      * Renders the model in RenderLiving
      */
-    static void renderModelDeathBio(RenderLivingBase renderer, EntityLivingBase entity, float f7, float f6, float f4, float p_77036_5_, float f13, float f5)
+    static void renderModelDeathBio(RenderLivingBase<EntityLivingBase> renderer, EntityLivingBase entity, float f7, float f6, float f4, float p_77036_5_, float f13, float f5)
     {
     	float prog = ((float)entity.deathTime / (float)MAX_DEATH_TIME); 
     	
@@ -212,15 +194,10 @@ public class DeathEffectEntityRenderer {
     	ModelBase mainModel = null;
 //    	ModelBase renderPassModel;
     	RenderManager renderManager = null;
-    	try {
-    		mainModel = (ModelBase)RLB_mainModel.get(renderer);
-    		renderManager = (RenderManager)R_renderManager.get(renderer);
+		mainModel = renderer.mainModel;
+		renderManager = renderer.renderManager;
 //            renderPassModel = (ModelBase)RLB_renderPassModel.get(renderer);
-           	R_bindEntityTexture.invoke(renderer, entity);
-        	
-        }catch (Exception e) {
-        	e.printStackTrace();
-        }
+		renderer.bindEntityTexture(entity);
     	//System.out.println("BoxList: "+mainModel.boxList.size());
     	//1st: Entity Texture
         //mainModel.render(entity, f7, f6, f4, p_77036_5_, f13, f5);
@@ -276,25 +253,20 @@ public class DeathEffectEntityRenderer {
 	/**
      * Renders the model in RenderLiving
      */
-    static void renderModelDeathLaser(RenderLivingBase renderer, EntityLivingBase entity, float f7, float f6, float f4, float p_77036_5_, float f13, float f5)
+    static void renderModelDeathLaser(RenderLivingBase<EntityLivingBase> renderer, EntityLivingBase entity, float f7, float f6, float f4, float p_77036_5_, float f13, float f5)
     {
     	float prog = ((float)entity.deathTime / (float)MAX_DEATH_TIME); 
-    	
-    	Random rand = new Random(entity.getEntityId());
+
     	//ResourceLocation texture = RES_BIO_EFFECT;
     	RenderType renderType = RenderType.ADDITIVE;
     	ModelBase mainModel = null;
     	//ModelBase renderPassModel;
     	RenderManager renderManager = null;
-    	try {
-    		mainModel = (ModelBase)RLB_mainModel.get(renderer);
-    		renderManager = (RenderManager)R_renderManager.get(renderer);
-            //renderPassModel = (ModelBase)R_renderPassModel.get(renderer);
-           	R_bindEntityTexture.invoke(renderer, entity);
-        	
-        }catch (Exception e) {
-        	e.printStackTrace();
-        }
+		mainModel = renderer.mainModel;
+		renderManager =renderer.renderManager;
+		//renderPassModel = (ModelBase)R_renderPassModel.get(renderer);
+		renderer.bindEntityTexture(entity);
+
     	//System.out.println("BoxList: "+mainModel.boxList.size());
     	//1st: Entity Texture
         //mainModel.render(entity, f7, f6, f4, p_77036_5_, f13, f5);
@@ -513,26 +485,20 @@ public class DeathEffectEntityRenderer {
 	/**
      * Renders the model in RenderLiving
      */
-    static void renderModel(RenderLivingBase renderer, EntityLivingBase entity, float f7, float f6, float f4, float p_77036_5_, float f13, float f5, ResourceLocation texture, RenderType renderType)
+    static void renderModel(RenderLivingBase<EntityLivingBase> renderer, EntityLivingBase entity, float f7, float f6, float f4, float p_77036_5_, float f13, float f5, ResourceLocation texture, RenderType renderType)
     {
     	
     	ModelBase mainModel = null;
     	ModelBase renderPassModel;
     	RenderManager renderManager = null;
-    	try {
-    		mainModel = (ModelBase)RLB_mainModel.get(renderer);
-    		renderManager = (RenderManager)R_renderManager.get(renderer);
-//            renderPassModel = (ModelBase)RLB_renderPassModel.get(renderer);
-            
-            if (texture != null) {
-            	renderManager.renderEngine.bindTexture(RES_BIO_EFFECT);
-            }else {
-            	R_bindEntityTexture.invoke(renderer, entity);
-            }
-        	
-        }catch (Exception e) {
-        	e.printStackTrace();
-        }
+		mainModel = renderer.mainModel;
+		renderManager =renderer.renderManager;
+//      renderPassModel = renderer.renderPassModel;
+		if (texture != null) {
+			renderManager.renderEngine.bindTexture(RES_BIO_EFFECT);
+		} else {
+			renderer.bindEntityTexture(entity);
+		}
     
     	TGRenderHelper.enableBlendMode(renderType);
     	

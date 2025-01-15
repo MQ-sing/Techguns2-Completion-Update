@@ -123,7 +123,7 @@ public class GenericNPC extends EntityMob implements IRangedAttackMob, INPCTechg
 	    }
 
 		@Override
-	    protected SoundEvent getDeathSound()
+	    public SoundEvent getDeathSound()
 	    {
 	        return SoundEvents.ENTITY_VILLAGER_DEATH;
 	    }
