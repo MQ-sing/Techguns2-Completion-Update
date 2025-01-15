@@ -56,24 +56,24 @@ public class ServerProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
-		guihandler.<CamoBenchTileEnt>addEntry(CamoBenchTileEnt.class, CamoBenchContainer::new);
-		guihandler.<RepairBenchTileEnt>addEntry(RepairBenchTileEnt.class, RepairBenchContainer::new);
-		guihandler.<AmmoPressTileEnt>addEntry(AmmoPressTileEnt.class, AmmoPressContainer::new);
-		guihandler.<MetalPressTileEnt>addEntry(MetalPressTileEnt.class, MetalPressContainer::new);
-		guihandler.<ChemLabTileEnt>addEntry(ChemLabTileEnt.class, ChemLabContainer::new);
-		guihandler.<TurretTileEnt>addEntry(TurretTileEnt.class, TurretContainer::new);
-		guihandler.<FabricatorTileEntMaster>addEntry(FabricatorTileEntMaster.class, FabricatorContainer::new);
-		guihandler.<ChargingStationTileEnt>addEntry(ChargingStationTileEnt.class, ChargingStationContainer::new);
-		guihandler.<ReactionChamberTileEntMaster>addEntry(ReactionChamberTileEntMaster.class, ReactionChamberContainer::new);
-		guihandler.<DungeonScannerTileEnt>addEntry(DungeonScannerTileEnt.class, DungeonScannerContainer::new);
-		guihandler.<DungeonGeneratorTileEnt>addEntry(DungeonGeneratorTileEnt.class, DungeonGeneratorContainer::new);
-		guihandler.<Door3x3TileEntity>addEntry(Door3x3TileEntity.class, Door3x3Container::new);
-		guihandler.<ExplosiveChargeTileEnt>addEntry(ExplosiveChargeTileEnt.class, ExplosiveChargeContainer<ExplosiveChargeTileEnt>::new);
-		guihandler.<ExplosiveChargeAdvTileEnt>addEntry(ExplosiveChargeAdvTileEnt.class, ExplosiveChargeContainer<ExplosiveChargeAdvTileEnt>::new);
-		guihandler.<OreDrillTileEntMaster>addEntry(OreDrillTileEntMaster.class, OreDrillContainer::new);
-		guihandler.<BlastFurnaceTileEnt>addEntry(BlastFurnaceTileEnt.class, BlastFurnaceContainer::new);
-		guihandler.<GrinderTileEnt>addEntry(GrinderTileEnt.class, GrinderContainer::new);
-		guihandler.<UpgradeBenchTileEnt>addEntry(UpgradeBenchTileEnt.class, UpgradeBenchContainer::new);
+		guihandler.addEntry(CamoBenchTileEnt.class, CamoBenchContainer::new);
+		guihandler.addEntry(RepairBenchTileEnt.class, RepairBenchContainer::new);
+		guihandler.addEntry(AmmoPressTileEnt.class, AmmoPressContainer::new);
+		guihandler.addEntry(MetalPressTileEnt.class, MetalPressContainer::new);
+		guihandler.addEntry(ChemLabTileEnt.class, ChemLabContainer::new);
+		guihandler.addEntry(TurretTileEnt.class, TurretContainer::new);
+		guihandler.addEntry(FabricatorTileEntMaster.class, FabricatorContainer::new);
+		guihandler.addEntry(ChargingStationTileEnt.class, ChargingStationContainer::new);
+		guihandler.addEntry(ReactionChamberTileEntMaster.class, ReactionChamberContainer::new);
+		guihandler.addEntry(DungeonScannerTileEnt.class, DungeonScannerContainer::new);
+		guihandler.addEntry(DungeonGeneratorTileEnt.class, DungeonGeneratorContainer::new);
+		guihandler.addEntry(Door3x3TileEntity.class, Door3x3Container::new);
+		guihandler.addEntry(ExplosiveChargeTileEnt.class, ExplosiveChargeContainer::new);
+		guihandler.addEntry(ExplosiveChargeAdvTileEnt.class, ExplosiveChargeContainer::new);
+		guihandler.addEntry(OreDrillTileEntMaster.class, OreDrillContainer::new);
+		guihandler.addEntry(BlastFurnaceTileEnt.class, BlastFurnaceContainer::new);
+		guihandler.addEntry(GrinderTileEnt.class, GrinderContainer::new);
+		guihandler.addEntry(UpgradeBenchTileEnt.class, UpgradeBenchContainer::new);
 	}
 	
 	@Override

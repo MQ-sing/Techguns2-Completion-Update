@@ -1,10 +1,10 @@
 package techguns.deatheffects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectAVLTreeSet;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -67,13 +67,11 @@ import techguns.entities.npcs.ZombieSoldier;
  */
 public class EntityDeathUtils {
 	
-	public static HashMap<DeathType, HashSet<Class<? extends EntityLivingBase>>> entityDeathTypes;
+	public static Object2ObjectOpenHashMap<DeathType, Set<Class<? extends EntityLivingBase>>> entityDeathTypes= new Object2ObjectOpenHashMap<>();
 
-	public static HashSet<Class<? extends EntityLivingBase>> goreMap = new HashSet<>();
+	public static ObjectOpenHashSet<Class<? extends EntityLivingBase>> goreMap = new ObjectOpenHashSet<>();
 	static {
-		entityDeathTypes = new HashMap<>();
 		//Gore
-		
 		goreMap.add(EntityPlayer.class);
 		goreMap.add(EntityZombie.class);
 		goreMap.add(EntitySkeleton.class);
@@ -95,8 +93,6 @@ public class EntityDeathUtils {
 		goreMap.add(ZombieFarmer.class);
 		goreMap.add(ZombieMiner.class);
 		goreMap.add(Bandit.class);
-		goreMap.add(ZombieSoldier.class);
-		goreMap.add(EntityHorse.class);
 		goreMap.add(EntityMooshroom.class);
 		goreMap.add(EntityWolf.class);
 		goreMap.add(EntitySquid.class);
@@ -163,7 +159,7 @@ public class EntityDeathUtils {
     public enum DeathType {
     	DEFAULT(0), GORE(1), BIO(2), LASER(3), DISMEMBER(4);
     	
-    	int value;
+    	final int value;
     	
     	private DeathType(int value) {
     		this.value = value;

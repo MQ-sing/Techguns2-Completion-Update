@@ -516,20 +516,15 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	private void insertLayerAfterArmor(RenderPlayer r, TGLayerRendererer tglayer) {
-		try {
-			//???
-			List<LayerRenderer> layers = ((RenderLivingBase)(r)).layerRenderers;
+		//???
+		List<LayerRenderer> layers = ((RenderLivingBase)(r)).layerRenderers;
 
-			for(int i=0;i<layers.size();i++) {
-				LayerRenderer layer = layers.get(i);
-				if(layer instanceof LayerBipedArmor){
-					layers.add(i+1, tglayer);
-					break;
-				}				
+		for(int i=0;i<layers.size();i++) {
+			LayerRenderer layer = layers.get(i);
+			if(layer instanceof LayerBipedArmor){
+				layers.add(i+1, tglayer);
+				break;
 			}
-			
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 		}
 	}
 	
