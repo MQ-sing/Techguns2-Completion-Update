@@ -82,7 +82,7 @@ public class GenericGun extends GenericItem implements IGenericGun, IItemTGRende
 	int minFiretime=4; // = 0;
 	int clipsize=10; // = 10;
 	int reloadtime=40; // = 40; //ticks
-	float damage = 2.0f; // = 10;
+	public float damage = 2.0f; // = 10;
 	SoundEvent firesound = TGSounds.M4_FIRE;
 	SoundEvent reloadsound = TGSounds.M4_RELOAD;
 	SoundEvent firesoundStart = TGSounds.M4_FIRE;
@@ -96,19 +96,19 @@ public class GenericGun extends GenericItem implements IGenericGun, IItemTGRende
 	float Yzoom = 0.08f;
 	float Zzoom = 0.02f;
 	boolean fireCenteredZoomed=false;
-	int ticksToLive = 40;
-	float speed = 2.0f;
+	public int ticksToLive = 40;
+	public float speed = 2.0f;
 
-	float damageMin=1.0f;
-	float damageDropStart=20f;
-	float damageDropEnd=40f;
+	public float damageMin=1.0f;
+	public float damageDropStart=20f;
+	public float damageDropEnd=40f;
 	float penetration = 0.0f;
 
 	AmmoType ammoType = AmmoTypes.PISTOL_ROUNDS;
 
 	boolean shotgun = false;
 	boolean burst = false;
-	float spread = 0.015f;
+	public float spread = 0.015f;
 	int bulletcount = 7;
 	float accuracy = 0.0f;
 
@@ -118,7 +118,7 @@ public class GenericGun extends GenericItem implements IGenericGun, IItemTGRende
 	int recoiltime = 5; // ticks;
 
 	int muzzleFlashtime = 5;
-	boolean silenced = false;
+	public boolean silenced = false;
 
 	boolean checkRecoil = false;
 	boolean checkMuzzleFlash = false;
@@ -148,7 +148,7 @@ public class GenericGun extends GenericItem implements IGenericGun, IItemTGRende
 	
 	float meleeDamagePwr = 6.0f;
 	float meleeDamageEmpty = 2.0f;
-	float digSpeed=1.0f;
+	public float digSpeed=1.0f;
 	
 	/**
 	 * spread multiplier while shooting zoomed
@@ -156,7 +156,7 @@ public class GenericGun extends GenericItem implements IGenericGun, IItemTGRende
 	float zoombonus=1.0f;
 	
 	float radius=1.0f;
-	double gravity=0.0f;
+	public double gravity=0.0f;
 
 	boolean shootWithLeftClick=true;
 	

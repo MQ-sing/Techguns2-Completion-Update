@@ -490,24 +490,24 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	protected void initGuiHandler() {
-		guihandler.<CamoBenchTileEnt>addEntry(CamoBenchTileEnt.class, CamoBenchGui::new, CamoBenchContainer::new);
-		guihandler.<RepairBenchTileEnt>addEntry(RepairBenchTileEnt.class, RepairBenchGui::new, RepairBenchContainer::new);
-		guihandler.<AmmoPressTileEnt>addEntry(AmmoPressTileEnt.class, AmmoPressGui::new, AmmoPressContainer::new);
-		guihandler.<MetalPressTileEnt>addEntry(MetalPressTileEnt.class, MetalPressGui::new, MetalPressContainer::new);
-		guihandler.<ChemLabTileEnt>addEntry(ChemLabTileEnt.class, ChemLabGui::new, ChemLabContainer::new);
-		guihandler.<TurretTileEnt>addEntry(TurretTileEnt.class, TurretGui::new, TurretContainer::new);
-		guihandler.<FabricatorTileEntMaster>addEntry(FabricatorTileEntMaster.class, FabricatorGui::new, FabricatorContainer::new);
-		guihandler.<ChargingStationTileEnt>addEntry(ChargingStationTileEnt.class, ChargingStationGui::new, ChargingStationContainer::new);
-		guihandler.<ReactionChamberTileEntMaster>addEntry(ReactionChamberTileEntMaster.class, ReactionChamberGui::new, ReactionChamberContainer::new);
-		guihandler.<DungeonScannerTileEnt>addEntry(DungeonScannerTileEnt.class, DungeonScannerGui::new, DungeonScannerContainer::new);
-		guihandler.<DungeonGeneratorTileEnt>addEntry(DungeonGeneratorTileEnt.class, DungeonGeneratorGui::new, DungeonGeneratorContainer::new);
-		guihandler.<Door3x3TileEntity>addEntry(Door3x3TileEntity.class, Door3x3Gui::new, Door3x3Container::new);
-		guihandler.<ExplosiveChargeTileEnt>addEntry(ExplosiveChargeTileEnt.class, ExplosiveChargeGui::new, ExplosiveChargeContainer::new);
-		guihandler.<ExplosiveChargeAdvTileEnt>addEntry(ExplosiveChargeAdvTileEnt.class, ExplosiveChargeGui::new, ExplosiveChargeContainer::new);
-		guihandler.<OreDrillTileEntMaster>addEntry(OreDrillTileEntMaster.class, OreDrillGui::new, OreDrillContainer::new);
-		guihandler.<BlastFurnaceTileEnt>addEntry(BlastFurnaceTileEnt.class, BlastFurnaceGui::new, BlastFurnaceContainer::new);
-		guihandler.<GrinderTileEnt>addEntry(GrinderTileEnt.class, GrinderGui::new, GrinderContainer::new);
-		guihandler.<UpgradeBenchTileEnt>addEntry(UpgradeBenchTileEnt.class, UpgradeBenchGui::new, UpgradeBenchContainer::new);
+		guihandler.addEntry(CamoBenchTileEnt.class, CamoBenchGui::new, CamoBenchContainer::new);
+		guihandler.addEntry(RepairBenchTileEnt.class, RepairBenchGui::new, RepairBenchContainer::new);
+		guihandler.addEntry(AmmoPressTileEnt.class, AmmoPressGui::new, AmmoPressContainer::new);
+		guihandler.addEntry(MetalPressTileEnt.class, MetalPressGui::new, MetalPressContainer::new);
+		guihandler.addEntry(ChemLabTileEnt.class, ChemLabGui::new, ChemLabContainer::new);
+		guihandler.addEntry(TurretTileEnt.class, TurretGui::new, TurretContainer::new);
+		guihandler.addEntry(FabricatorTileEntMaster.class, FabricatorGui::new, FabricatorContainer::new);
+		guihandler.addEntry(ChargingStationTileEnt.class, ChargingStationGui::new, ChargingStationContainer::new);
+		guihandler.addEntry(ReactionChamberTileEntMaster.class, ReactionChamberGui::new, ReactionChamberContainer::new);
+		guihandler.addEntry(DungeonScannerTileEnt.class, DungeonScannerGui::new, DungeonScannerContainer::new);
+		guihandler.addEntry(DungeonGeneratorTileEnt.class, DungeonGeneratorGui::new, DungeonGeneratorContainer::new);
+		guihandler.addEntry(Door3x3TileEntity.class, Door3x3Gui::new, Door3x3Container::new);
+		guihandler.addEntry(ExplosiveChargeTileEnt.class, ExplosiveChargeGui::new, ExplosiveChargeContainer::new);
+		guihandler.addEntry(ExplosiveChargeAdvTileEnt.class, ExplosiveChargeGui::new, ExplosiveChargeContainer::new);
+		guihandler.addEntry(OreDrillTileEntMaster.class, OreDrillGui::new, OreDrillContainer::new);
+		guihandler.addEntry(BlastFurnaceTileEnt.class, BlastFurnaceGui::new, BlastFurnaceContainer::new);
+		guihandler.addEntry(GrinderTileEnt.class, GrinderGui::new, GrinderContainer::new);
+		guihandler.addEntry(UpgradeBenchTileEnt.class, UpgradeBenchGui::new, UpgradeBenchContainer::new);
 	}
 	
 	@Override

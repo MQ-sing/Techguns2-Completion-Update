@@ -197,8 +197,6 @@ public class RenderGunBase extends RenderItemBase {
 //			if ((transform == TransformType.FIRST_PERSON_LEFT_HAND || transform == TransformType.FIRST_PERSON_RIGHT_HAND) &&ClientProxy.PARTIAL_TICK_TIME < 0.05f)
 //				System.out.println("Lefthand = "+leftHand+" isOffhand = "+isOffhand);
 		}
-
-		GlStateManager.pushMatrix();
 		
 		
 
@@ -210,9 +208,10 @@ public class RenderGunBase extends RenderItemBase {
 		byte attackType=0;
 		
 		boolean renderScope = false;
-		
-		if (values != null && (TransformType.FIRST_PERSON_LEFT_HAND == transform || TransformType.FIRST_PERSON_RIGHT_HAND == transform
-				|| TransformType.THIRD_PERSON_LEFT_HAND == transform || TransformType.THIRD_PERSON_RIGHT_HAND == transform)) {
+
+		final boolean onHand = TransformType.FIRST_PERSON_LEFT_HAND == transform || TransformType.FIRST_PERSON_RIGHT_HAND == transform
+				|| TransformType.THIRD_PERSON_LEFT_HAND == transform || TransformType.THIRD_PERSON_RIGHT_HAND == transform;
+		if (values != null && onHand) {
 			AttackTime attack = values.getAttackTime(isOffhand);
 			attackType = attack.getAttackType();
 			
@@ -258,55 +257,53 @@ public class RenderGunBase extends RenderItemBase {
 
 				}
 			}
-			
-			if (TransformType.FIRST_PERSON_LEFT_HAND == transform || TransformType.FIRST_PERSON_RIGHT_HAND == transform  || TransformType.THIRD_PERSON_LEFT_HAND == transform || TransformType.THIRD_PERSON_RIGHT_HAND == transform){
-				//Calculate muzzleFlash progress
-								
-				if(attack.getMuzzleFlashTime()>0) {
-					long diff = attack.getMuzzleFlashTime() - System.currentTimeMillis();
-					if (diff <= 0 || diff > attack.getMuzzleFlashTimeTotal()) {
-						attack.setMuzzleFlashTime(0L);
-						attack.setMuzzleFlashTimeTotal(0);
-					}else{			
-						muzzleFlashProgress = 1.0f-((float)diff / (float)attack.getMuzzleFlashTimeTotal());
-					}		
-				}
-				
-			} 
-			
-		}
 
-		this.applyTranslation(transform);
+            //Calculate muzzleFlash progress
 
-		if (TransformType.FIRST_PERSON_LEFT_HAND == transform || TransformType.FIRST_PERSON_RIGHT_HAND == transform) {
-			
-			if (!isOffhand && gun.isZooming() && this.scope!=null) {
-				renderScope = true;
-			} else {
-			
-				if (!isOffhand && gun.getZoomMult()<1.0f && gun.isZooming()) {
-					this.transformADS(gun.getZoomX(), gun.getZoomY(), gun.getZoomZ()); //-0.35f, 0.1f, 0.05f)
-				}
-				
-				
-				this.transformFirstPerson(fireProgress, reloadProgress, chargeProgress, TransformType.FIRST_PERSON_LEFT_HAND == transform, sneaking&&isOffhand);
-			}
+            if(attack.getMuzzleFlashTime()>0) {
+                long diff = attack.getMuzzleFlashTime() - System.currentTimeMillis();
+                if (diff <= 0 || diff > attack.getMuzzleFlashTimeTotal()) {
+                    attack.setMuzzleFlashTime(0L);
+                    attack.setMuzzleFlashTimeTotal(0);
+                }else{
+                    muzzleFlashProgress = 1.0f-((float)diff / (float)attack.getMuzzleFlashTimeTotal());
+                }
+            }
 
-		} else if (TransformType.THIRD_PERSON_LEFT_HAND == transform || TransformType.THIRD_PERSON_RIGHT_HAND == transform) {
-			this.transformThirdPerson(entityIn, fireProgress, reloadProgress, TransformType.THIRD_PERSON_LEFT_HAND == transform);
+        }
+		boolean firstPersonHand=TransformType.FIRST_PERSON_LEFT_HAND == transform || TransformType.FIRST_PERSON_RIGHT_HAND == transform;
 
-		} else if (TransformType.GUI == transform) {
-			this.transformGUI();
+		boolean zoomed=firstPersonHand && !isOffhand && gun.getZoomMult()<1.0f && gun.isZooming();
 
-		} else if (TransformType.GROUND == transform) {
-			this.transformGround();
+		//don't render scope
+		if (!firstPersonHand || isOffhand || !gun.isZooming() || this.scope==null) {
+			GlStateManager.pushMatrix();
+			this.applyTranslation(transform);
+			if(zoomed) this.transformADS(gun.getZoomX(), gun.getZoomY(), gun.getZoomZ());
+			switch (transform){
+                case THIRD_PERSON_LEFT_HAND:
+					this.transformThirdPerson(entityIn, fireProgress, reloadProgress, true);
+                    break;
+                case THIRD_PERSON_RIGHT_HAND:
+					this.transformThirdPerson(entityIn, fireProgress, reloadProgress, false);
+                    break;
+                case FIRST_PERSON_LEFT_HAND:
+					this.transformFirstPerson(fireProgress, reloadProgress, chargeProgress, true, sneaking&&isOffhand);
+                    break;
+                case FIRST_PERSON_RIGHT_HAND:
+					this.transformFirstPerson(fireProgress, reloadProgress, chargeProgress, false, sneaking&&isOffhand);
+                    break;
+                case GUI:
+					this.transformGUI();
+                    break;
+                case GROUND:
+					this.transformGround();
+                    break;
+                case FIXED:
+					this.transformFixed();
+                    break;
+            }
 
-		} else if (TransformType.FIXED == transform) {
-			this.transformFixed();
-		}
-
-		
-		if (!renderScope) {		
 			this.setBaseScale(entityIn, transform);
 			this.setBaseRotation(transform);
 			this.applyBaseTranslation();
@@ -343,7 +340,6 @@ public class RenderGunBase extends RenderItemBase {
 			}
 			
 		} else {
-			GlStateManager.popMatrix();
 			if (this.scopeRecoilAnim != null && fireProgress > 0f) {
 				this.scopeRecoilAnim.play(fireProgress, TransformType.FIRST_PERSON_LEFT_HAND == transform, this.scopeRecoilParams);
 			}

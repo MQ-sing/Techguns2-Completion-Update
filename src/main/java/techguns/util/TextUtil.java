@@ -5,12 +5,12 @@ import techguns.Techguns;
 
 public class TextUtil {
 	public static String trans(String key){
-		return I18n.format(key, new Object[0]);
+		return I18n.format(key);
 	}
 	/**
 	 * Trans with prefixing MODID.
 	 */
 	public static String transTG(String key){
-		return I18n.format(Techguns.MODID+"."+key, new Object[0]);
+		return I18n.format(Techguns.MODID+"."+key);
 	}
 }

@@ -36,21 +36,21 @@ import techguns.util.MathUtil;
 public class DamageSystem {
 
 	public static float getDamageFactor(EntityLivingBase attacker, EntityLivingBase target) {
-		if (attacker instanceof EntityPlayer && target instanceof EntityPlayer){
-			if (FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled()){
-				return TGConfig.damagePvP;
-			} else {
-				return 0.0f;
-			}
-		} else if (target instanceof EntityPlayer){
-			if ( attacker instanceof NPCTurret){
+		if(attacker instanceof EntityPlayer){
+            if(target instanceof EntityPlayer){
+                if (FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled()){
+                    return TGConfig.damagePvP;
+                } else {
+                    return 0.0f;
+                }
+            }
+            return TGConfig.damagePlayerAttack;
+        } else if (target instanceof EntityPlayer){
+			if (attacker instanceof NPCTurret){
 				return TGConfig.damageTurretToPlayer;
 			} else {
 				return TGConfig.damageFactorNPC;
 			}
-
-		} else if (attacker instanceof EntityPlayer){
-			return 1.0f;
 		}
 		
 		return TGConfig.damageFactorNPC;

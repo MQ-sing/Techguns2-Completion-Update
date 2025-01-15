@@ -1,5 +1,6 @@
 package techguns.plugins.crafttweaker;
 
+@Deprecated
 public enum EnumGunStat {
 	/**
 	 * The damage dealt close range

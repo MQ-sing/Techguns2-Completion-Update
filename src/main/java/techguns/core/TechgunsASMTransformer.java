@@ -34,11 +34,9 @@ import net.minecraft.launchwrapper.IClassTransformer;
 
 public class TechgunsASMTransformer implements IClassTransformer {
 
-	protected static List classesToPatch  = Arrays.asList(new String[]{
-			"net.minecraft.client.renderer.RenderItem",
-			"net.minecraft.client.renderer.entity.RenderEntityItem",
-			"net.minecraft.client.renderer.ItemRenderer"
-			});
+	protected static List<String> classesToPatch = Arrays.asList("net.minecraft.client.renderer.RenderItem",
+            "net.minecraft.client.renderer.entity.RenderEntityItem",
+            "net.minecraft.client.renderer.ItemRenderer");
 	
 	
 	protected static HashMap<String,String> mappings_obf = new HashMap<>();
@@ -56,23 +54,33 @@ public class TechgunsASMTransformer implements IClassTransformer {
 		addMapping("GROUND","h","GROUND");
 		addMapping("EntityPlayer","aeb","net/minecraft/entity/player/EntityPlayer");
 	}
-	
-	
+	private static class Mapping{
+		private final String obfuscated;
+		private final String deobfuscated;
+		public Mapping(String obfuscated, String deobfuscated){
+			this.obfuscated=obfuscated;
+			this.deobfuscated=deobfuscated;
+		}
+		public String get(boolean isObfuscated){
+			return isObfuscated ? obfuscated : deobfuscated;
+		}
+	}
+	private static final Mapping TRANSFORMTYPE=new Mapping("bwa$b","net/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType");
+	private static final Mapping ENTITYITEM=new Mapping("acj","net/minecraft/entity/item/EntityItem");
+	private static final Mapping ITEMSTACK=new Mapping("ain","net/minecraft/item/ItemStack");
+	private static final Mapping ELB=new Mapping("vn","net/minecraft/entity/EntityLivingBase");
+	private static final Mapping IBACKEDMODEL=new Mapping("cfw","net/minecraft/client/renderer/block/model/IBakedModel");
+	private static final Mapping GUI=new Mapping("g","GUI");
+	private static final Mapping GROUND=new Mapping("h","GROUND");
+	private static final Mapping ENTITYPLAYER = new Mapping("aeb","net/minecraft/entity/player/EntityPlayer");
+
 	private static void addMapping(String key, String obf, String deobf){
 		mappings_obf.put(key, obf);
 		mappings_deobf.put(key, deobf);
 	}
-	
-	private static String getMapping(String key, boolean deobf){
-		//if (deobf){
-			return mappings_deobf.get(key);
-		//} else {
-		//	return mappings_obf.get(key);
-		//}
-	}
-	
+
 	private static String getHookSignature(boolean deobf){
-		return "(L"+getMapping("ItemStack",deobf)+";L"+getMapping("ELB",deobf)+";L"+getMapping("TransformType",deobf)+";Z)Z";
+		return "(L"+ITEMSTACK.get(deobf)+";L"+ELB.get(deobf)+";L"+TRANSFORMTYPE.get(deobf)+";Z)Z";
 	}
 	/**
 	 * signature of getAttackStrengthForRendering hook
@@ -122,58 +130,49 @@ public class TechgunsASMTransformer implements IClassTransformer {
 		return basicClass;
 	}
 
-	protected void patchRenderEntityItem(ClassNode classNode, boolean deobf){
-		
+	protected void patchRenderEntityItem(ClassNode classNode, boolean deobf) {
+
 		String targetMethodName = deobf ? "doRender" : "func_76986_a";//"a";
-		
-		String signature = "(L"+getMapping("EntityItem",deobf)+";DDDFF)V";
-		
-		for (MethodNode m : classNode.methods){
-			
+
+		String signature = "(L" +ENTITYITEM.get(deobf)+ ";DDDFF)V";
+		AbstractInsnNode targetNode = null;
+		MethodNode method = null;
+		for (MethodNode m : classNode.methods) {
 			if (m.name.equals(targetMethodName) && m.desc.equals(signature)) {
-				
-				AbstractInsnNode targetNode = null;
-				AbstractInsnNode targetNode2 = null;
-					
-				//Shity code ahead
-		        for (AbstractInsnNode instruction : m.instructions.toArray())
-		        {
-		        	
-		            if (instruction.getOpcode() == INVOKEVIRTUAL)
-		            {
-
-	            		targetNode=instruction;
-
-		                if ( instruction.getPrevious() !=null && instruction.getPrevious().getOpcode()== ALOAD && ((VarInsnNode) instruction.getPrevious()).var == 17)
-		                {  	
-		                	if ( instruction.getPrevious().getPrevious() !=null && instruction.getPrevious().getPrevious().getOpcode()== ALOAD && ((VarInsnNode) instruction.getPrevious().getPrevious()).var == 10)
-		                    {
-		                    	
-	                			targetNode2 = instruction.getPrevious().getPrevious().getPrevious().getPrevious();
-	                		
-	        			        InsnList toInsert = new InsnList();
-	        	            	
-	        	            	toInsert.add(new VarInsnNode(ALOAD, 10));
-	        	            	toInsert.add(new InsnNode(ACONST_NULL));
-	        	            	//toInsert.add(new VarInsnNode(ALOAD, 2));
-	        	            	toInsert.add(new FieldInsnNode(GETSTATIC, getMapping("TransformType",deobf), getMapping("GROUND",deobf), "L"+getMapping("TransformType",deobf)+";"));
-	        	            	toInsert.add(new InsnNode(ICONST_0));
-	        	            	toInsert.add(new MethodInsnNode(INVOKESTATIC, ITEMRENDERHACK, "renderItem", getHookSignature(deobf), false));
-	        	            	LabelNode labelNode1 = new LabelNode();
-	        	            	toInsert.add(new JumpInsnNode(IFNE, labelNode1));
-	        	            	
-	        	            	m.instructions.insertBefore(targetNode2, toInsert);
-	        	            	
-	        	            	m.instructions.insert(targetNode,labelNode1);
-	        	                
-	                            System.out.println("Successfully patched RenderEntityItem with ASM");
-	                           
-		                    }
-		                }
-		            }
-		        }
-		       
+				method=m;
+				for(AbstractInsnNode instruction:m.instructions.toArray()){
+					if(instruction instanceof MethodInsnNode){
+						MethodInsnNode insn=(MethodInsnNode) instruction;
+						if (insn.name.equals(deobf ? "renderItem" : "func_180454_a") && insn.desc.equals("(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/IBakedModel;)V")){
+							targetNode=insn;
+							break;
+						}
+					}
+				}
 			}
+		}
+		if (targetNode != null){
+			AbstractInsnNode targetNode2 = targetNode.getPrevious().getPrevious().getPrevious().getPrevious();
+
+			//if(ItemHack.renderItem(itemstack,null,ItemCameraTransforms.TransformType.GROUND,false)) goto LabelNode1;
+
+			InsnList toInsert = new InsnList();
+			toInsert.add(new VarInsnNode(ALOAD, 10));
+			toInsert.add(new InsnNode(ACONST_NULL));
+			//toInsert.add(new VarInsnNode(ALOAD, 2));
+			toInsert.add(new FieldInsnNode(GETSTATIC,TRANSFORMTYPE.get(deobf),GROUND.get(deobf), "L" +TRANSFORMTYPE.get(deobf) + ";"));
+			toInsert.add(new InsnNode(ICONST_0));
+			toInsert.add(new MethodInsnNode(INVOKESTATIC, ITEMRENDERHACK, "renderItem", getHookSignature(deobf), false));
+			LabelNode labelNode1 = new LabelNode();
+			toInsert.add(new JumpInsnNode(IFNE, labelNode1));
+
+			method.instructions.insertBefore(targetNode2, toInsert);
+
+			method.instructions.insert(targetNode, labelNode1);
+
+			System.out.println("Successfully patched RenderEntityItem with ASM");
+		}else{
+			System.out.println("Error Patching RenderEntityItem with ASM");
 		}
 	}
 	
@@ -188,15 +187,15 @@ public class TechgunsASMTransformer implements IClassTransformer {
 		
 		String targetMethodNameGui = deobf ? "renderItemModelIntoGUI" : "func_191962_a";//"a";
 		
-		String itemStackName = "L"+getMapping("ItemStack",deobf);
-		String camTransformTypeName = "L"+getMapping("TransformType",deobf);
+		String itemStackName = "L"+ITEMSTACK.get(deobf);
+		String camTransformTypeName = "L"+TRANSFORMTYPE.get(deobf);
 		
-		String signature = "("+itemStackName+";L"+getMapping("ELB",deobf)+";"+camTransformTypeName+";Z)V";
+		String signature = "("+itemStackName+";L"+ELB.get(deobf)+";"+camTransformTypeName+";Z)V";
 		String signature2 = "("+itemStackName+";"+camTransformTypeName+";)V"; 
 		
-		String signature_renderModel = "(L"+getMapping("IBakedModel",deobf)+";"+itemStackName+";)V";
+		String signature_renderModel = "(L"+IBACKEDMODEL.get(deobf)+";"+itemStackName+";)V";
 
-		String signature3 = "("+itemStackName+";IIL"+getMapping("IBakedModel",deobf)+";)V";
+		String signature3 = "("+itemStackName+";IIL"+IBACKEDMODEL.get(deobf)+";)V";
 		
 	
 		/*System.out.println("Target1:"+targetMethodName+":"+signature);
@@ -412,7 +411,7 @@ public class TechgunsASMTransformer implements IClassTransformer {
         	toInsert.add(new VarInsnNode(ALOAD, 1));
         	toInsert.add(new InsnNode(ACONST_NULL));
         	//toInsert.add(new VarInsnNode(ALOAD, 2));
-        	toInsert.add(new FieldInsnNode(GETSTATIC, getMapping("TransformType",deobf), getMapping("GUI",deobf), "L"+getMapping("TransformType",deobf)+";"));
+        	toInsert.add(new FieldInsnNode(GETSTATIC, TRANSFORMTYPE.get(deobf),GUI.get(deobf), "L"+TRANSFORMTYPE.get(deobf)+";"));
         	toInsert.add(new InsnNode(ICONST_0));
         	toInsert.add(new MethodInsnNode(INVOKESTATIC, ITEMRENDERHACK, "renderItem", getHookSignature(deobf), false));
         	LabelNode labelNode1 = new LabelNode();
@@ -469,7 +468,7 @@ public class TechgunsASMTransformer implements IClassTransformer {
         	
         	toInsert.add(new VarInsnNode(ALOAD, 2));
         	toInsert.add(new InsnNode(ACONST_NULL));
-        	toInsert.add(new FieldInsnNode(GETSTATIC, getMapping("TransformType",deobf), getMapping("GUI",deobf), "L"+getMapping("TransformType",deobf)+";"));
+        	toInsert.add(new FieldInsnNode(GETSTATIC,TRANSFORMTYPE.get(deobf), GUI.get(deobf), "L"+TRANSFORMTYPE.get(deobf)+";"));
         	toInsert.add(new InsnNode(ICONST_1));
         	toInsert.add(new MethodInsnNode(INVOKESTATIC, ITEMRENDERHACK, "renderItem", getHookSignature(deobf), false));
         	LabelNode labelNode1 = new LabelNode();

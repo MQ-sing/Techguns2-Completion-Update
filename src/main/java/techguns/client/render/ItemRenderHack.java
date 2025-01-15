@@ -43,18 +43,17 @@ public class ItemRenderHack {
 		EntityPlayer ply = Minecraft.getMinecraft().player;
 		ItemStack mainhand = ply.getHeldItemMainhand();
 		ItemStack offhand = ply.getHeldItemOffhand();
-		if(!mainhand.isEmpty() && mainhand.getItem() instanceof IGenericGunMelee) {
+		if(mainhand.getItem() instanceof IGenericGunMelee) {
 			return 1f;
 		}
 		return ply.getCooledAttackStrength(1.0f);
 	}
 	
 	public static boolean renderItem(ItemStack stack, EntityLivingBase elb, ItemCameraTransforms.TransformType transform, boolean leftHanded){
-
 		if (!shouldRenderItem(stack, elb, transform, leftHanded)) {
 			return true;
 		}
-		if (!stack.isEmpty() && stack.getItem() instanceof IItemTGRenderer){
+		if (stack.getItem() instanceof IItemTGRenderer){
 			IItemTGRenderer item = (IItemTGRenderer) stack.getItem();
 			
 			if (!item.shouldUseRenderHack(stack)){

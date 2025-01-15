@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -29,51 +30,35 @@ public class TGFX {
 	public static final String FXLIST_DIR = "/assets/techguns/particles/";
 	public static String[] FXFILES = {"fxlist.txt","nuke.txt", "deathfx.txt", "impactfx.txt", "testfx.txt"};
 	
-	public static HashMap<String, TGFXType> FXList = new HashMap<String, TGFXType>();
+	public static HashMap<String, TGFXType> FXList = new HashMap<>();
 
 	
 	public static List<TGParticleSystem> createFX(World world, String fx, double posX, double posY, double posZ, double motionX, double motionY, double motionZ) {
-		if (FXList.containsKey(fx.toLowerCase())) {
-			TGFXType fxtype = FXList.get(fx.toLowerCase());
-			List<TGParticleSystem> list = fxtype.createParticleSystems(world, posX, posY, posZ, motionX, motionY, motionZ);
-			return list;
-		}else {
+		TGFXType fxtype = FXList.get(fx.toLowerCase());
+		if(fxtype==null){
 			//System.out.println("FX '"+fx+"' not found!");
 			return null;
 		}
+		List<TGParticleSystem> list = fxtype.createParticleSystems(world, posX, posY, posZ, motionX, motionY, motionZ);
+		return list;
 	}
 	
 	public static List<TGParticleSystem> createFXOnEntity(Entity ent, String fx) {
-
-		if (FXList.containsKey(fx.toLowerCase())) {
-			TGFXType fxtype = FXList.get(fx.toLowerCase());
-			List<TGParticleSystem> list = fxtype.createParticleSystemsOnEntity(ent);
-			return list;
-		}else {
-			return null;
-		}
+		TGFXType fxtype = FXList.get(fx.toLowerCase());
+		if (fxtype==null)return null;
+        return fxtype.createParticleSystemsOnEntity(ent);
 	}
 	
 	public static List<TGParticleSystem> createFXOnParticle(World worldIn, TGParticle ent, String fx) {
-
-		if (FXList.containsKey(fx.toLowerCase())) {
-			TGFXType fxtype = FXList.get(fx.toLowerCase());
-			List<TGParticleSystem> list = fxtype.createParticleSystemsOnParticle(worldIn, ent);
-			return list;
-		}else {
-			return null;
-		}
+		TGFXType fxtype = FXList.get(fx.toLowerCase());
+		if (fxtype==null)return null;
+        return fxtype.createParticleSystemsOnParticle(worldIn, ent);
 	}
 	
 	public static List<TGParticleSystem> createFXOnEntityItemAttached(Entity ent, EnumHand hand, String fx) {
-
-		if (FXList.containsKey(fx.toLowerCase())) {
-			TGFXType fxtype = FXList.get(fx.toLowerCase());
-			List<TGParticleSystem> list = fxtype.createParticleSystemsOnEntityItemAttached(ent, hand);
-			return list;
-		}else {
-			return null;
-		}
+		TGFXType fxtype = FXList.get(fx.toLowerCase());
+		if (fxtype==null) return null;
+		return fxtype.createParticleSystemsOnEntityItemAttached(ent, hand);
 	}
 	
 	public static void loadFXList() {

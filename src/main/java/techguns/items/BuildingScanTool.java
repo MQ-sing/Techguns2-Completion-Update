@@ -113,8 +113,8 @@ public class BuildingScanTool extends GenericItem {
 		}
 		
 		try {
-			PrintWriter pw = new PrintWriter(new FileWriter(new File("structure_scan.txt")));
-			pw.println(sbDefBlocks.toString());
+			PrintWriter pw = new PrintWriter(new FileWriter("structure_scan.txt"));
+			pw.println(sbDefBlocks);
 			pw.println("---");
 			pw.println();
 			pw.println(blockPosList.size());
@@ -127,7 +127,6 @@ public class BuildingScanTool extends GenericItem {
 			pw.close();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	

@@ -13,7 +13,6 @@ import net.minecraft.util.math.Vec3d;
 import techguns.TGConfig;
 import techguns.client.particle.list.ParticleList;
 import techguns.client.particle.list.ParticleList.ParticleListIterator;
-import techguns.client.render.GLStateSnapshot;
 
 public class TGParticleManager {
 	

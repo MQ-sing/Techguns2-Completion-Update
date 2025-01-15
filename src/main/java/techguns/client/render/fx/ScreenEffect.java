@@ -4,7 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,10 +15,12 @@ import techguns.Techguns;
 import techguns.client.render.TGRenderHelper;
 import techguns.client.render.TGRenderHelper.RenderType;
 
+import java.io.IOException;
+
 @SideOnly(Side.CLIENT)
 public class ScreenEffect implements IScreenEffect {
 	
-	protected ResourceLocation fxTexture;
+	protected SimpleTexture fxTexture;
 	protected int cols;
 	protected int rows;
 	protected int numSprites;
@@ -35,8 +40,10 @@ public class ScreenEffect implements IScreenEffect {
 	public ScreenEffect(String fxTexture, int cols,
 			int rows, int numSprites, RenderType type) {
 		super();
-		this.fxTexture = new ResourceLocation(Techguns.MODID,fxTexture);
-		this.cols = cols;
+		ResourceLocation textureLocation = new ResourceLocation(Techguns.MODID,fxTexture);
+		this.fxTexture = new SimpleTexture(textureLocation);
+        Minecraft.getMinecraft().getTextureManager().loadTexture(textureLocation,this.fxTexture);
+        this.cols = cols;
 		this.rows = rows;
 		this.numSprites = numSprites;
 		this.type = type;
@@ -98,8 +105,7 @@ public class ScreenEffect implements IScreenEffect {
 			//TGRenderHelper.enableFXLighting();
 			TGRenderHelper.enableBlendMode(type);
 			//GlStateManager.color(1f, 1f, 1f);
-			
-			Minecraft.getMinecraft().getTextureManager().bindTexture(fxTexture);
+			GlStateManager.bindTexture(fxTexture.getGlTextureId());
 
 			GlStateManager.rotate(rot_x, 1.0f, 0, 0);
 			GlStateManager.rotate(rot_y, 0, 1.0f, 0);

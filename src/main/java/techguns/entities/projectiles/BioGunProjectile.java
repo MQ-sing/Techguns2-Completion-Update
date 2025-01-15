@@ -153,8 +153,7 @@ public class BioGunProjectile extends GenericProjectile implements IEntityAdditi
     			 } else {
     				 
     				 TileEntity tile = this.world.getTileEntity(blobPos);
-        			 if(tile!=null && tile instanceof BioBlobTileEnt){
-        				 
+        			 if(tile instanceof BioBlobTileEnt){
         				 ((BioBlobTileEnt)tile).hitBlob(level, this.shooter);
         			 }
     				 

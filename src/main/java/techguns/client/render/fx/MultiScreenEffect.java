@@ -6,7 +6,7 @@ public class MultiScreenEffect implements IScreenEffect {
 
 	public static final float z_offset = 0.01f;
 	
-	public ArrayList<EffectEntry> effects = new ArrayList<>();
+	private final ArrayList<EffectEntry> effects = new ArrayList<>();
 	
 	public MultiScreenEffect() {
 	}
@@ -32,7 +32,7 @@ public class MultiScreenEffect implements IScreenEffect {
 		return this;
 	}
 
-	class EffectEntry {
+	static class EffectEntry {
 		IScreenEffect effect;
 		float start;
 		float end;
